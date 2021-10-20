@@ -41,3 +41,4 @@ Order turi: uzsakymo nr(int), kliento info (string), Alone (bool) (ar ant atskir
 Element: name, amount, width, height, depth, handle (future), weight, picture 
 Accesorries: future
 
+
