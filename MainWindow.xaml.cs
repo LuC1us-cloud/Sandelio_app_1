@@ -3,6 +3,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using static Sandelio_app_1.controllers.Settings;
+using Sandelio_app_1.classes;
+using System.Diagnostics;
 
 namespace Sandelio_app_1
 {
@@ -14,8 +17,23 @@ namespace Sandelio_app_1
     {
         public MainWindow()
         {
+            tempTesting();
             InitializeComponent();
             ExperimentalMethod();
+        }
+
+        private static void tempTesting()
+        {
+            Item item1 = new(20, 40, 20, 5, 10, "item1");
+            Item item2 = new(20, 40, 20, 5, 20, "item2");
+            Item item3 = new(20, 40, 20, 5, 30, "item3");
+            Item item4 = new(20, 40, 50, 5, 40, "item4");
+            Item item5 = new(20, 40, 50, 5, 50, "item5");
+            Debug.WriteLine(item1.AddItemOnStack(item2));
+            Debug.WriteLine(item1.AddItemOnStack(item3));
+            Debug.WriteLine(item1.AddItemOnStack(item4));
+            Debug.WriteLine(item1);
+            Debug.WriteLine(item5);
         }
 
         private void ExperimentalMethod()
@@ -24,7 +42,11 @@ namespace Sandelio_app_1
             int y = 0;
             for (int i = 0; i < max; i++)
             {
-                if (i % 3 == 0) y++;
+                if (i % 3 == 0)
+                {
+                    y++;
+                }
+
                 Border borderBox = new()
                 {
                     Name = $"Box_{i}",
