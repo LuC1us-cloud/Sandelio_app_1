@@ -1,11 +1,10 @@
-﻿using System.Windows;
+﻿using Sandelio_app_1.classes;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using static Sandelio_app_1.controllers.Settings;
-using Sandelio_app_1.classes;
-using System.Diagnostics;
 
 namespace Sandelio_app_1
 {
@@ -22,80 +21,112 @@ namespace Sandelio_app_1
             ExperimentalMethod();
         }
 
+        private static Pallet pallet = new(1);
+
         private static void tempTesting()
         {
-            Item item1 = new(20, 40, 20, 5, 10, "item1");
-            Item item2 = new(20, 40, 20, 5, 20, "item2");
-            Item item3 = new(20, 40, 20, 5, 30, "item3");
-            Item item4 = new(20, 40, 50, 5, 40, "item4");
-            Item item5 = new(20, 40, 50, 5, 50, "item5");
-            Debug.WriteLine(item1.AddItemOnStack(item2));
-            Debug.WriteLine(item1.AddItemOnStack(item3));
-            Debug.WriteLine(item1.AddItemOnStack(item4));
-            Debug.WriteLine(item1);
-            Debug.WriteLine(item5);
+            List<Item> list = new();
+            list.Add(new(200, 2850, 2050, 50, "item1"));
+            list.Add(new(115, 1250, 1400, 50, "item2"));
+            list.Add(new(115, 1250, 1400, 50, "item3"));
+            list.Add(new(115, 1250, 1400, 50, "item4"));
+            list.Add(new(115, 1250, 1400, 50, "item5"));
+            list.Add(new(115, 1680, 1780, 50, "item6"));
+            list.Add(new(115, 952, 1000, 50, "item7"));
+            list.Add(new(115, 952, 1000, 50, "item8"));
+            list.Add(new(115, 852, 852, 50, "item9"));
+            list.Add(new(115, 852, 852, 50, "item10"));
+            pallet.Initialize(list);
+            Debug.WriteLine(pallet);
         }
 
         private void ExperimentalMethod()
         {
-            int max = 12;
-            int y = 0;
-            for (int i = 0; i < max; i++)
+            for (int i = 0; i < pallet.itemsList.Count; i++)
             {
-                if (i % 3 == 0)
-                {
-                    y++;
-                }
-
                 Border borderBox = new()
                 {
                     Name = $"Box_{i}",
-                    Width = 80,
-                    Height = 20,
-                    Background = new SolidColorBrush(Color.FromRgb((byte)(0 + (255 / max * i)), (byte)(0 + (255 / max * i)), 255)),
-                    CornerRadius = new(5)
+                    Width = (pallet.itemsList[i].Length / 4) - 5,
+                    Height = (pallet.itemsList[i].Width / 4) - 5,
+                    Background = new SolidColorBrush(Color.FromRgb((byte)(0 + (255 / 10 * i)), 255, (byte)(0 + (255 / 10 * i)))),
+                    CornerRadius = new(5),
+                    Child = new Label()
+                    {
+                        Content = pallet.itemsList[i],
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        FontSize = pallet.itemsList[i].Width / 12,
+                        FontWeight = FontWeights.DemiBold,
+                        Background = Brushes.Transparent
+                    }
                 };
                 borderBox.MouseMove += BorderBox_MouseMove;
-                Canvas.SetLeft(borderBox, 10 + (90 * y));
-                Canvas.SetTop(borderBox, 30 + (30 * (i % 3)));
+                borderBox.Child.MouseMove += BorderBox_MouseMove;
+                Canvas.SetLeft(borderBox, 50 + (pallet.itemsList[i].X / 4));
+                Canvas.SetTop(borderBox, 50 + (pallet.itemsList[i].Y / 4));
                 _ = canvas.Children.Add(borderBox);
-
-                Border borderBox1 = new()
-                {
-                    Name = $"Box_1{i}",
-                    Width = 80,
-                    Height = 20,
-                    Background = new SolidColorBrush(Color.FromRgb((byte)(0 + (255 / max * i)), 255, (byte)(0 + (255 / max * i)))),
-                    CornerRadius = new(5)
-                };
-                borderBox1.MouseMove += BorderBox_MouseMove;
-                Canvas.SetLeft(borderBox1, 10 + (90 * y));
-                Canvas.SetTop(borderBox1, 140 + (30 * (i % 3)));
-                _ = canvas.Children.Add(borderBox1);
-
-                Border borderBox2 = new()
-                {
-                    Name = $"Box_1{i}",
-                    Width = 80,
-                    Height = 20,
-                    Background = new SolidColorBrush(Color.FromRgb(255, (byte)(0 + (255 / max * i)), (byte)(0 + (255 / max * i)))),
-                    CornerRadius = new(5)
-                };
-                borderBox2.MouseMove += BorderBox_MouseMove;
-                Canvas.SetLeft(borderBox2, 10 + (90 * y));
-                Canvas.SetTop(borderBox2, 250 + (30 * (i % 3)));
-                _ = canvas.Children.Add(borderBox2);
             }
+            //int max = 12;
+            //int y = 0;
+            //for (int i = 0; i < max; i++)
+            //{
+            //    if (i % 3 == 0)
+            //    {
+            //        y++;
+            //    }
+
+            //Border borderBox = new()
+            //{
+            //    Name = $"Box_{i}",
+            //    Width = 80,
+            //    Height = 20,
+            //    Background = new SolidColorBrush(Color.FromRgb((byte)(0 + (255 / max * i)), (byte)(0 + (255 / max * i)), 255)),
+            //    CornerRadius = new(5)
+            //};
+            //borderBox.MouseMove += BorderBox_MouseMove;
+            //Canvas.SetLeft(borderBox, 10 + (90 * y));
+            //Canvas.SetTop(borderBox, 30 + (30 * (i % 3)));
+            //_ = canvas.Children.Add(borderBox);
+
+            //Border borderBox1 = new()
+            //{
+            //    Name = $"Box_1{i}",
+            //    Width = 80,
+            //    Height = 20,
+            //    Background = new SolidColorBrush(Color.FromRgb((byte)(0 + (255 / max * i)), 255, (byte)(0 + (255 / max * i)))),
+            //    CornerRadius = new(5)
+            //};
+            //borderBox1.MouseMove += BorderBox_MouseMove;
+            //Canvas.SetLeft(borderBox1, 10 + (90 * y));
+            //Canvas.SetTop(borderBox1, 140 + (30 * (i % 3)));
+            //_ = canvas.Children.Add(borderBox1);
+
+            //Border borderBox2 = new()
+            //{
+            //    Name = $"Box_1{i}",
+            //    Width = 80,
+            //    Height = 20,
+            //    Background = new SolidColorBrush(Color.FromRgb(255, (byte)(0 + (255 / max * i)), (byte)(0 + (255 / max * i)))),
+            //    CornerRadius = new(5)
+            //};
+            //borderBox2.MouseMove += BorderBox_MouseMove;
+            //Canvas.SetLeft(borderBox2, 10 + (90 * y));
+            //Canvas.SetTop(borderBox2, 250 + (30 * (i % 3)));
+            //_ = canvas.Children.Add(borderBox2);
+            //}
         }
+
         public static Point offsetPoint = new();
+
         private void BorderBox_MouseMove(object sender, MouseEventArgs e)
         {
-
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 DragDrop.DoDragDrop((DependencyObject)e.Source, new DataObject(DataFormats.Serializable, e.Source), DragDropEffects.Move);
             }
         }
+
         public static int zIndex;
 
         private void Canvas_Drop(object sender, DragEventArgs e)

@@ -9,6 +9,8 @@ namespace Sandelio_app_1.classes
         public int LayerHeight { get; set; }
         public int Top { get; set; }
         public int Left { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         private readonly string clientInfo;
         private readonly string name;
@@ -38,14 +40,13 @@ namespace Sandelio_app_1.classes
         /// <param name="weight">Weight in kg</param>
         /// <param name="name">Name of the item</param>
 
-        public Item(int width, int length, int height, int margin, int weight, string name)
+        public Item(int width, int length, int height, int weight, string name)
         {
             this.width = width;
             this.length = length;
             this.height = height;
             this.weight = weight;
             this.name = name;
-            Margin = margin;
         }
         /// <summary>
         /// Gets stack weight
@@ -137,7 +138,7 @@ namespace Sandelio_app_1.classes
         /// <returns>String representing full stack info</returns>
         public override string ToString()
         {
-            string temp = $"Layer {LayerHeight}: {name}, {weight} | StackWeight: {GetStackWeight()}";
+            string temp = $"{name}, [{length}x{width}] ";
             if (Child is not null)
             {
                 temp += "\n" + Child.ToString();
