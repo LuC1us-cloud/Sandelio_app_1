@@ -1,5 +1,3 @@
-# Sandelio_app_1
-
 perdėliojimas drag-and-drop, su neutral zone kur gali pasidėt dėžutes.
 
 
@@ -15,9 +13,9 @@ iskart is jo atimti 200 (paletes dydis)
 
 Plotis gali but 600,800,1200
 Plotis pagal ilgi renkamas atitinkamai
-1.8m > plotis, aukstis - 600
-1.8m < plotis, aukstis - 800
-3m > plotis - 1200
+1.8m > ilgis, plotis - 600
+1.8m < ilgis, plotis - 800
+3m > ilgis - 1200
 
 2850x800 palete bus isrinkta.
 
@@ -41,4 +39,18 @@ Order turi: uzsakymo nr(int), kliento info (string), Alone (bool) (ar ant atskir
 Element: name, amount, width, height, depth, handle (future), weight, picture 
 Accesorries: future
 
+
+
+
+first iteration:
+while possible to place something or items.Count > 0:
+place largest possible item by length
+
+second iteration:
+while possible to place something or items.Count > 0:
+place largest possible on top of first layer
+
+third iteration:
+while possible to place something or items.Count > 0:
+place largest possible on top of second layer
 
