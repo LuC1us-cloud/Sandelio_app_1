@@ -21,6 +21,7 @@ namespace Sandelio_app_1
             ExperimentalMethod();
         }
 
+        private const int drawingScale = 4;
         private static Pallet pallet = new(1);
 
         private static void tempTesting()
@@ -28,28 +29,43 @@ namespace Sandelio_app_1
             List<Item> list = new();
             list.Add(new(200, 2850, 2050, 50, "item1"));
             list.Add(new(115, 1250, 1400, 50, "item2"));
-            list.Add(new(115, 1250, 1400, 50, "item3"));
+            list.Add(new(165, 1250, 1400, 50, "item3"));
             list.Add(new(115, 1250, 1400, 50, "item4"));
             list.Add(new(115, 1250, 1400, 50, "item5"));
             list.Add(new(115, 1680, 1780, 50, "item6"));
             list.Add(new(115, 952, 1000, 50, "item7"));
             list.Add(new(115, 952, 1000, 50, "item8"));
-            list.Add(new(115, 852, 852, 50, "item9"));
-            list.Add(new(115, 852, 852, 50, "item10"));
-            pallet.Initialize(list);
+            for (int i = 9; i < 9; i++)
+            {
+                list.Add(new(115, 852, 852, 50, $"item{i}"));
+            }
+            list = pallet.Initialize(list);
+            Debug.WriteLine($"Items returned {list.Count}");
             Debug.WriteLine(pallet);
         }
 
         private void ExperimentalMethod()
         {
+            Border palletBorder = new()
+            {
+                Name = "Pallet",
+                Width = pallet.Length/ drawingScale,
+                Height = pallet.Width/ drawingScale,
+                Background = Brushes.SandyBrown,
+                CornerRadius = new(10)
+            };
+            Canvas.SetLeft(palletBorder, 47);
+            Canvas.SetTop(palletBorder, 47);
+            _ = canvas.Children.Add(palletBorder);
+
             for (int i = 0; i < pallet.itemsList.Count; i++)
             {
                 Border borderBox = new()
                 {
                     Name = $"Box_{i}",
-                    Width = (pallet.itemsList[i].Length / 4) - 5,
-                    Height = (pallet.itemsList[i].Width / 4) - 5,
-                    Background = new SolidColorBrush(Color.FromRgb((byte)(0 + (255 / 10 * i)), 255, (byte)(0 + (255 / 10 * i)))),
+                    Width = (pallet.itemsList[i].Length / drawingScale) - 5,
+                    Height = (pallet.itemsList[i].Width / drawingScale) - 5,
+                    Background = new SolidColorBrush(Color.FromRgb((byte)(0 + (255 / 10 * i)), (byte)(0 + (255 / 10 * i)), 255)),
                     CornerRadius = new(5),
                     Child = new Label()
                     {
@@ -63,8 +79,8 @@ namespace Sandelio_app_1
                 };
                 borderBox.MouseMove += BorderBox_MouseMove;
                 borderBox.Child.MouseMove += BorderBox_MouseMove;
-                Canvas.SetLeft(borderBox, 50 + (pallet.itemsList[i].X / 4));
-                Canvas.SetTop(borderBox, 50 + (pallet.itemsList[i].Y / 4));
+                Canvas.SetLeft(borderBox, 50 + (pallet.itemsList[i].X / drawingScale));
+                Canvas.SetTop(borderBox, 50 + (pallet.itemsList[i].Y / drawingScale));
                 _ = canvas.Children.Add(borderBox);
             }
             //int max = 12;

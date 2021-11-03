@@ -127,10 +127,23 @@ namespace Sandelio_app_1.classes
             }
         }
         /// <summary>
-        /// Removes item from stack and all items that were on top of it
+        /// Pops top most item from stack
         /// </summary>
-        public void RemoveFromStack()
+        public Item PopStack()
         {
+            if (Child != null)
+            {
+                return Child.PopStack();
+            }
+            else
+            {
+                if (Parent != null)
+                {
+                    Parent.Child = null;
+                    Parent = null;
+                }
+                return this;
+            }
         }
         /// <summary>
         /// To string formatting
@@ -138,10 +151,10 @@ namespace Sandelio_app_1.classes
         /// <returns>String representing full stack info</returns>
         public override string ToString()
         {
-            string temp = $"{name}, [{length}x{width}] ";
+            string temp = $"{name} ";
             if (Child is not null)
             {
-                temp += "\n" + Child.ToString();
+                temp += "/ " + Child.ToString();
             }
             return temp;
         }
