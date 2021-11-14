@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Sandelio_app_1.controllers;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,17 @@ namespace Sandelio_app_1.classes
     internal class Pallet
     {
         public int PalletNumber { get; set; }
+        public string Adress { get; set; }
+        public string PostCode { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string OrderNumber { get; set; }
         public float PalletWeight { get; set; }
         public int PalletMaxHeight { get; set; }
         public int Length { get; set; }
         public int Width { get; set; }
-        public List<Item> itemsList { get; set; } = new();
+        public int Height { get; set; }
+        public List<Item> ItemsList { get; set; } = new();
 
         public Pallet(int number)
         {
@@ -26,7 +33,6 @@ namespace Sandelio_app_1.classes
         /// <returns>List with unused items in the stacking process</returns>
         public List<Item> Initialize(List<Item> items)
         {
-            Debug.WriteLine("Initialized");
             if (Length == 0 || Width == 0)
             {
                 AutoSize(items);
@@ -39,7 +45,7 @@ namespace Sandelio_app_1.classes
             int biggestItemIndex = items.FindIndex(x => x.Length == Length);
             Item largestPossibleItem = items[biggestItemIndex];
             items.RemoveAt(biggestItemIndex);
-            itemsList.Add(largestPossibleItem);
+            ItemsList.Add(largestPossibleItem);
             cursorPositionY += largestPossibleItem.Width;
             while (true)
             {
@@ -52,7 +58,7 @@ namespace Sandelio_app_1.classes
                     if (!tempList.Any() || cursorPositionX >= Length)
                     {
                         cursorPositionX = 0;
-                        cursorPositionY += itemsList[^1].Width;
+                        cursorPositionY += ItemsList[^1].Width;
                         break;
                     }
                     else
@@ -62,12 +68,12 @@ namespace Sandelio_app_1.classes
                         items.RemoveAt(biggestItemIndex);
                         largestPossibleItem.X = cursorPositionX;
                         largestPossibleItem.Y = cursorPositionY;
-                        itemsList.Add(largestPossibleItem);
+                        ItemsList.Add(largestPossibleItem);
                         cursorPositionX += largestPossibleItem.Length;
                     }
                 }
                 // temp used to calculate if next row if items will be out of boundaries
-                if(items.Count == 0)
+                if (items.Count == 0)
                 {
                     break;
                 }
@@ -81,7 +87,7 @@ namespace Sandelio_app_1.classes
             while (true)
             {
                 bool inserted = false;
-                foreach (Item item in itemsList)
+                foreach (Item item in ItemsList)
                 {
                     for (int i = 0; i < items.Count; i++)
                     {
@@ -120,7 +126,19 @@ namespace Sandelio_app_1.classes
             }
             return items;
         }
-
+        /// <summary>
+        /// Calculates the total weight of all items on the pallet
+        /// </summary>
+        /// <returns>the weight of the pallet in kg</returns>
+        public int GetPalletWeight()
+        {
+            int weight = 0;
+            foreach (Item item in ItemsList)
+            {
+                weight += item.GetStackWeight();
+            }
+            return weight;
+        }
         /// <summary>
         /// Clears the pallet
         /// </summary>
@@ -128,7 +146,7 @@ namespace Sandelio_app_1.classes
         public List<Item> TakeAllItems()
         {
             List<Item> temp = new();
-            foreach (Item item in itemsList)
+            foreach (Item item in ItemsList)
             {
                 // Pops all children from the stack
                 while (item.Child != null)
@@ -138,7 +156,7 @@ namespace Sandelio_app_1.classes
                 // Adds the remaining item itself
                 temp.Add(item);
             }
-            itemsList = new();
+            ItemsList = new();
             return temp;
         }
 
@@ -153,25 +171,47 @@ namespace Sandelio_app_1.classes
             switch (maxLength)
             {
                 case < 1800:
-                    Width = 600;
+                    Width = Settings.PalletWidth[0];
                     break;
 
                 case < 3000:
-                    Width = 800;
+                    Width = Settings.PalletWidth[1];
                     break;
 
                 case >= 3000:
-                    Width = 1200;
+                    Width = Settings.PalletWidth[2];
                     break;
 
                 default:
             }
         }
+        public int GetTotalHeight()
+        {
+            return ItemsList.Max(x => x.Y) + ItemsList.Max(x => x.Width);
+        }
+        public string[] ToStringArray()
+        {
+            // sort ItemList by Y. 
+            string[] tempStringArray = new string[ItemsList.Count];
+            List<Item> tempList = ItemsList.OrderBy(x => x.Y).ToList();
+            int tempHeight = 0;
+            int tempIndex = 0;
+            for (int i = 0; i < tempList.Count; i++)
+            {
+                if (tempHeight != tempList[i].Y)
+                {
+                    tempHeight = tempList[i].Y;
+                    tempIndex++;
+                }
+                tempStringArray[tempIndex] += tempList[i].ToString();
+            }
+            return tempStringArray;
+        }
 
         public override string ToString()
         {
             StringBuilder stringBuilder = new($"{PalletNumber} Pallet {Length}x{Width}\n");
-            foreach (Item item in itemsList)
+            foreach (Item item in ItemsList)
             {
                 _ = stringBuilder.AppendLine($"{item}");
             }

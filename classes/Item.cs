@@ -40,7 +40,7 @@ namespace Sandelio_app_1.classes
         /// <param name="weight">Weight in kg</param>
         /// <param name="name">Name of the item</param>
 
-        public Item(int width, int length, int height, int weight, string name)
+        public Item(string name, int width, int length, int height, int weight)
         {
             this.width = width;
             this.length = length;

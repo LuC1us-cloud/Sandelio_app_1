@@ -1,6 +1,10 @@
-﻿using Sandelio_app_1.classes;
+﻿using Microsoft.Win32;
+using Sandelio_app_1.classes;
+using Sandelio_app_1.controllers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,41 +20,21 @@ namespace Sandelio_app_1
     {
         public MainWindow()
         {
-            tempTesting();
+            FileIO.WriteOrders(FileIO.GenerateOrders(), "items.json");
             InitializeComponent();
-            ExperimentalMethod();
         }
 
         private const int drawingScale = 4;
         private static Pallet pallet = new(1);
 
-        private static void tempTesting()
-        {
-            List<Item> list = new();
-            list.Add(new(200, 2850, 2050, 50, "item1"));
-            list.Add(new(115, 1250, 1400, 50, "item2"));
-            list.Add(new(165, 1250, 1400, 50, "item3"));
-            list.Add(new(115, 1250, 1400, 50, "item4"));
-            list.Add(new(115, 1250, 1400, 50, "item5"));
-            list.Add(new(115, 1680, 1780, 50, "item6"));
-            list.Add(new(115, 952, 1000, 50, "item7"));
-            list.Add(new(115, 952, 1000, 50, "item8"));
-            for (int i = 9; i < 9; i++)
-            {
-                list.Add(new(115, 852, 852, 50, $"item{i}"));
-            }
-            list = pallet.Initialize(list);
-            Debug.WriteLine($"Items returned {list.Count}");
-            Debug.WriteLine(pallet);
-        }
 
         private void ExperimentalMethod()
         {
             Border palletBorder = new()
             {
                 Name = "Pallet",
-                Width = pallet.Length/ drawingScale,
-                Height = pallet.Width/ drawingScale,
+                Width = pallet.Length / drawingScale,
+                Height = pallet.Width / drawingScale,
                 Background = Brushes.SandyBrown,
                 CornerRadius = new(10)
             };
@@ -58,79 +42,31 @@ namespace Sandelio_app_1
             Canvas.SetTop(palletBorder, 47);
             _ = canvas.Children.Add(palletBorder);
 
-            for (int i = 0; i < pallet.itemsList.Count; i++)
+            for (int i = 0; i < pallet.ItemsList.Count; i++)
             {
                 Border borderBox = new()
                 {
                     Name = $"Box_{i}",
-                    Width = (pallet.itemsList[i].Length / drawingScale) - 5,
-                    Height = (pallet.itemsList[i].Width / drawingScale) - 5,
+                    Width = (pallet.ItemsList[i].Length / drawingScale) - 5,
+                    Height = (pallet.ItemsList[i].Width / drawingScale) - 5,
                     Background = new SolidColorBrush(Color.FromRgb((byte)(0 + (255 / 10 * i)), (byte)(0 + (255 / 10 * i)), 255)),
                     CornerRadius = new(5),
                     Child = new Label()
                     {
-                        Content = pallet.itemsList[i],
+                        Content = pallet.ItemsList[i],
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
-                        FontSize = pallet.itemsList[i].Width / 12,
+                        FontSize = pallet.ItemsList[i].Width / 12,
                         FontWeight = FontWeights.DemiBold,
                         Background = Brushes.Transparent
                     }
                 };
                 borderBox.MouseMove += BorderBox_MouseMove;
                 borderBox.Child.MouseMove += BorderBox_MouseMove;
-                Canvas.SetLeft(borderBox, 50 + (pallet.itemsList[i].X / drawingScale));
-                Canvas.SetTop(borderBox, 50 + (pallet.itemsList[i].Y / drawingScale));
+                Canvas.SetLeft(borderBox, 50 + (pallet.ItemsList[i].X / drawingScale));
+                Canvas.SetTop(borderBox, 50 + (pallet.ItemsList[i].Y / drawingScale));
                 _ = canvas.Children.Add(borderBox);
             }
-            //int max = 12;
-            //int y = 0;
-            //for (int i = 0; i < max; i++)
-            //{
-            //    if (i % 3 == 0)
-            //    {
-            //        y++;
-            //    }
-
-            //Border borderBox = new()
-            //{
-            //    Name = $"Box_{i}",
-            //    Width = 80,
-            //    Height = 20,
-            //    Background = new SolidColorBrush(Color.FromRgb((byte)(0 + (255 / max * i)), (byte)(0 + (255 / max * i)), 255)),
-            //    CornerRadius = new(5)
-            //};
-            //borderBox.MouseMove += BorderBox_MouseMove;
-            //Canvas.SetLeft(borderBox, 10 + (90 * y));
-            //Canvas.SetTop(borderBox, 30 + (30 * (i % 3)));
-            //_ = canvas.Children.Add(borderBox);
-
-            //Border borderBox1 = new()
-            //{
-            //    Name = $"Box_1{i}",
-            //    Width = 80,
-            //    Height = 20,
-            //    Background = new SolidColorBrush(Color.FromRgb((byte)(0 + (255 / max * i)), 255, (byte)(0 + (255 / max * i)))),
-            //    CornerRadius = new(5)
-            //};
-            //borderBox1.MouseMove += BorderBox_MouseMove;
-            //Canvas.SetLeft(borderBox1, 10 + (90 * y));
-            //Canvas.SetTop(borderBox1, 140 + (30 * (i % 3)));
-            //_ = canvas.Children.Add(borderBox1);
-
-            //Border borderBox2 = new()
-            //{
-            //    Name = $"Box_1{i}",
-            //    Width = 80,
-            //    Height = 20,
-            //    Background = new SolidColorBrush(Color.FromRgb(255, (byte)(0 + (255 / max * i)), (byte)(0 + (255 / max * i)))),
-            //    CornerRadius = new(5)
-            //};
-            //borderBox2.MouseMove += BorderBox_MouseMove;
-            //Canvas.SetLeft(borderBox2, 10 + (90 * y));
-            //Canvas.SetTop(borderBox2, 250 + (30 * (i % 3)));
-            //_ = canvas.Children.Add(borderBox2);
-            //}
         }
 
         public static Point offsetPoint = new();
@@ -168,6 +104,47 @@ namespace Sandelio_app_1
             window.WindowStyle = WindowStyle.None;
 
             window.ShowDialog();
+        }
+        // Top most button click
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            List<Order> a = FileIO.GenerateOrders();
+            List<Pallet> b = FileIO.CreatePallets(a);
+            pallet = b[0];
+            ExperimentalMethod();
+            ExcelController.CreateFile(b, a[0].Name);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            // Open a file dialog and get file path to a json file, then save that path to a string
+            string filePath = null;
+            OpenFileDialog openFileDialog = new();
+            openFileDialog.InitialDirectory = "c:\\";
+            openFileDialog.Filter = "Documents (*.json)|*.json";
+            openFileDialog.RestoreDirectory = true;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                filePath = openFileDialog.FileName;
+            }
+            // If the file path is not null, then read the file and deserialize it to a list of orders
+            if (filePath != null)
+            {
+                List<Order> orders = FileIO.ReadFile(filePath);
+                // If the list of orders is not null, then create a list of pallets from the list of orders
+                if (orders != null)
+                {
+                    List<Pallet> pallets = FileIO.CreatePallets(orders);
+                    // If the list of pallets is not null, then create a list of pallets from the list of pallets
+                    if (pallets != null)
+                    {
+                        pallet = pallets[0];
+                        ExperimentalMethod();
+                        ExcelController.CreateFile(pallets, orders[0].Name);
+                    }
+                }
+            }
+
         }
     }
 }

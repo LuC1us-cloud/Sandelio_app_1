@@ -10,5 +10,6 @@ namespace Sandelio_app_1.controllers
     {
         public static int Margin { get; set; } = 5;
         public static int MaxStackWeight { get; set; } = 60000;
+        public static int[] PalletWidth { get; set; } = { 600, 800, 1200 };
     }
 }

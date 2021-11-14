@@ -37,14 +37,11 @@
                      CornerRadius="7"
                      Background="#FF181A20">
                 <StackPanel>
-                    <Button Content="Button" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0"/>
-                    <Button Content="Button" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0"/>
-                    <Button Content="Button" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0"/>
-                    <Button Content="Button" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0"/>
+                    <Button Content="Open excel" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Button_Click"/>
+                    <Button Content="Read file" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Button_Click_1"/>
                 </StackPanel>
             </Border>
         </Grid>
-
         <Border Grid.Row="1"
                 Grid.Column="1"
                 CornerRadius="4"
