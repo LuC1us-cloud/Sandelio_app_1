@@ -187,7 +187,9 @@ namespace Sandelio_app_1.classes
         }
         public int GetTotalHeight()
         {
-            return ItemsList.Max(x => x.Y) + ItemsList.Max(x => x.Width);
+            // find largest item.GetStackHeight() value and add Settings.PalletHeight to it, then return it
+            Height = ItemsList.Max(x => x.GetStackHeight()) + Settings.PalletHeight;
+            return Height;
         }
         public string[] ToStringArray()
         {

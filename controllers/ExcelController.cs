@@ -8,7 +8,7 @@ namespace Sandelio_app_1.controllers
 {
     internal class ExcelController
     {
-        // LDM still empty, height not calculated, border formatting issues, Drawings page logic is still NAN
+        // Drawings page logic is still NAN
         public static void CreateFile(List<Pallet> pallets, string client)
         {
             Microsoft.Office.Interop.Excel.Application oXL;
@@ -41,9 +41,9 @@ namespace Sandelio_app_1.controllers
                 range.Borders.Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin;
 
                 palletListSheet.Cells[3, 1] = "Total LDM:";
-                palletListSheet.Cells[3, 3] = "";
-                palletListSheet.Range[palletListSheet.Cells[3, 1], palletListSheet.Cells[3, 3]].Merge();
-                range = palletListSheet.Range[palletListSheet.Cells[3, 1], palletListSheet.Cells[3, 2]];
+                palletListSheet.Cells[3, 3] = "1.5";
+                palletListSheet.Range[palletListSheet.Cells[3, 1], palletListSheet.Cells[3, 2]].Merge();
+                range = palletListSheet.Range[palletListSheet.Cells[3, 1], palletListSheet.Cells[3, 3]];
                 range.Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
                 range.Borders.Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin;
 
@@ -108,7 +108,7 @@ namespace Sandelio_app_1.controllers
                     Microsoft.Office.Interop.Excel.Worksheet ws1 = (Microsoft.Office.Interop.Excel.Worksheet)oWB.Worksheets.Add();
                     ws1.Name = $"Pallet {i}";
 
-                    range = ws1.Range[ws1.Cells[2, 1], ws1.Cells[4, 1]];
+                    range = ws1.Range[ws1.Cells[2, 1], ws1.Cells[4, 4]];
                     range.Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
                     range.Borders.Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin;
                     ws1.Cells[2, 1] = "Client:";
@@ -120,9 +120,9 @@ namespace Sandelio_app_1.controllers
 
                     ws1.Range[ws1.Cells[3, 2], ws1.Cells[4, 4]].Merge();
                     ws1.Cells[8, 1] = "LDM:";
-                    ws1.Cells[8, 2] = "";
+                    ws1.Cells[8, 2] = pallets[i - 1].Width * pallets[i - 1].Length / 1000 / 2.4;
                     ws1.Cells[8, 4] = "Height:";
-                    ws1.Cells[8, 5] = pallets[i - 1].Height;
+                    ws1.Cells[8, 5] = pallets[i - 1].GetTotalHeight();
                     ws1.Cells[8, 7] = "Width:";
                     ws1.Cells[8, 8] = pallets[i - 1].Width;
                     ws1.Cells[8, 10] = "Length:";
@@ -160,7 +160,7 @@ namespace Sandelio_app_1.controllers
                     ws1.Cells[6, 7] = "Loading date:";
                     ws1.Range[ws1.Cells[6, 7], ws1.Cells[6, 8]].Merge();
 
-                    range = ws1.Range[ws1.Cells[2, 7], ws1.Cells[6, 9]];
+                    range = ws1.Range[ws1.Cells[2, 7], ws1.Cells[6, 10]];
                     range.Borders.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
                     range.Borders.Weight = Microsoft.Office.Interop.Excel.XlBorderWeight.xlThin;
                     ws1.Cells[2, 9] = pallets[i - 1].Adress;
