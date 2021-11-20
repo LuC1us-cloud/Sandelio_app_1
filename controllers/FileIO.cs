@@ -25,6 +25,7 @@ namespace Sandelio_app_1.controllers
     {
         public int Number { get; set; }
         public string Name { get; set; }
+        public string ClientInfo { get; set; }
         public bool Alone { get; set; }
         public string Address { get; set; }
         public string PostCode { get; set; }

@@ -1,4 +1,6 @@
-﻿using static Sandelio_app_1.controllers.Settings;
+﻿using Sandelio_app_1.controllers;
+using System.Diagnostics;
+using static Sandelio_app_1.controllers.Settings;
 
 namespace Sandelio_app_1.classes
 {
@@ -90,10 +92,12 @@ namespace Sandelio_app_1.classes
         /// <returns>True if the top item fits on the bottom one</returns>
         private static bool FitsOnTop(Item bottom, Item top)
         {
-            return bottom.width >= top.width && bottom.length >= top.length;
+            Debug.WriteLine(bottom.GetStackHeight() + top.GetStackHeight() <= MaxStackHeight
+                && bottom.width >= top.width && bottom.length >= top.length);
+            return bottom.GetStackHeight() + top.GetStackHeight() <= MaxStackHeight
+                && bottom.width >= top.width && bottom.length >= top.length;
         }
 
-        // Dar pridet kad atsizvelgtu i auksti
         /// <summary>
         /// Adds an item to the item stack if possible
         /// </summary>
@@ -103,7 +107,6 @@ namespace Sandelio_app_1.classes
         {
             if (Child is null)
             {
-                // Don't like this, a bit scuffed
                 if (LayerHeight is 0 && item.weight > MaxStackWeight && !FitsOnTop(this, item))
                 {
                     return false;
