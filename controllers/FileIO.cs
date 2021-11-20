@@ -63,6 +63,7 @@ namespace Sandelio_app_1.controllers
                 {
                     Number = i + 1,
                     Name = "Order " + (i + 1),
+                    ClientInfo = "Client information " + (i + 1),
                     Alone = rnd.Next(0, 2) == 1,
                     Address = "Address " + (i + 1),
                     PostCode = (i + 1).ToString(),
