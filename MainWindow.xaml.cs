@@ -15,7 +15,7 @@ namespace Sandelio_app_1
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-
+    // Still need to fix pallet item width in one line problem
     public partial class MainWindow : Window
     {
         public MainWindow()
