@@ -128,7 +128,7 @@ namespace Sandelio_app_1.controllers
             {
                 for (int i = 0; i < element.Amount; i++)
                 {
-                    items.Add(new Item(element.Name, element.Width, element.Height, element.Length, element.Weight));
+                    items.Add(new Item(element.Name, element.Width, element.Length, element.Height, element.Weight));
                 }
             }
             // while items.Count > 0, create a new pallet and add it to the list
