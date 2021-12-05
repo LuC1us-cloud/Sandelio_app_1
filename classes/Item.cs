@@ -92,6 +92,7 @@ namespace Sandelio_app_1.classes
         /// <returns>True if the top item fits on the bottom one</returns>
         private static bool FitsOnTop(Item bottom, Item top)
         {
+            Debug.WriteLine($"Max height is {MaxStackHeight} - Trying to stack {bottom.GetStackHeight()} plus {top.GetStackHeight()}");
             Debug.WriteLine(bottom.GetStackHeight() + top.GetStackHeight() <= MaxStackHeight
                 && bottom.width >= top.width && bottom.length >= top.length);
             return bottom.GetStackHeight() + top.GetStackHeight() <= MaxStackHeight
