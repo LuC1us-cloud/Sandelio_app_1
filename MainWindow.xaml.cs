@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
+
 namespace Sandelio_app_1
 {
     /// <summary>
@@ -96,14 +97,8 @@ namespace Sandelio_app_1
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            Window window = new();
-            window.Owner = this;
-            window.Height = 400;
-            window.Width = 400;
-            window.Background = new SolidColorBrush(Color.FromRgb(12, 14, 19));
-            window.WindowStyle = WindowStyle.None;
-
-            window.ShowDialog();
+            SettingsWindow settingsWindow = new();
+            settingsWindow.ShowDialog();
         }
         // Top most button click
         private void Button_Click(object sender, RoutedEventArgs e)
