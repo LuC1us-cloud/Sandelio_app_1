@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using Sandelio_app_1.classes;
 using Sandelio_app_1.controllers;
 using System;
@@ -9,7 +10,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-
+using Microsoft.WindowsAPICodePack.Dialogs;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Sandelio_app_1
 {
@@ -95,6 +97,7 @@ namespace Sandelio_app_1
             }
         }
 
+        // settigs menu opener
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             SettingsWindow settingsWindow = new();
@@ -107,25 +110,26 @@ namespace Sandelio_app_1
             List<Pallet> b = FileIO.CreatePallets(a);
             pallet = b[0];
             ExperimentalMethod();
-            ExcelController.CreateFile(b, a[0].Name);
+            //ExcelController.CreateFile(b, a[0].Name);
         }
-
+        // open folder button click
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             // Open a file dialog and get file path to a json file, then save that path to a string
             string filePath = null;
-            OpenFileDialog openFileDialog = new();
-            openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = "Documents (*.json)|*.json";
-            openFileDialog.RestoreDirectory = true;
-            if (openFileDialog.ShowDialog() == true)
+            CommonOpenFileDialog openFolderDialog = new();
+            openFolderDialog.InitialDirectory = "c:\\";
+            openFolderDialog.RestoreDirectory = true;
+            openFolderDialog.IsFolderPicker = true;
+            openFolderDialog.Title = "Browse folders";
+            if (openFolderDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                filePath = openFileDialog.FileName;
+                filePath = openFolderDialog.FileName;
             }
             // If the file path is not null, then read the file and deserialize it to a list of orders
             if (filePath != null)
             {
-                List<Order> orders = FileIO.ReadFile(filePath);
+                List<Order> orders = FileIO.ReadFile(filePath + "\\" + "orders.json");
                 // If the list of orders is not null, then create a list of pallets from the list of orders
                 if (orders != null)
                 {
@@ -135,7 +139,8 @@ namespace Sandelio_app_1
                     {
                         pallet = pallets[0];
                         ExperimentalMethod();
-                        ExcelController.CreateFile(pallets, orders[0].Name);
+                        string[] picturesPaths = FileIO.GetGIFs(filePath);
+                        ExcelController.CreateFile(pallets, orders[0].Name, picturesPaths);
                     }
                 }
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text.Json;
 using Sandelio_app_1.classes;
 
@@ -10,9 +11,9 @@ namespace Sandelio_app_1.controllers
     {
         public string Name { get; set; }
         public int Amount { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
         public int Length { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
         public int Weight { get; set; }
         public string Picture { get; set; }
         public override string ToString()
@@ -36,6 +37,7 @@ namespace Sandelio_app_1.controllers
 
     internal class FileIO
     {
+        // reads the file and returns a list of orders
         public static List<Order> ReadFile(string path)
         {
             string json = System.IO.File.ReadAllText(path);
@@ -43,6 +45,7 @@ namespace Sandelio_app_1.controllers
             return orders;
         }
 
+        // writes the list of orders to the file
         public static void WriteOrders(List<Order> orders, string path)
         {
             JsonSerializerOptions serializerOptions = new()
@@ -53,6 +56,7 @@ namespace Sandelio_app_1.controllers
             System.IO.File.WriteAllText(path, json);
         }
 
+        // generates random orders. used for testing
         public static List<Order> GenerateOrders()
         {
             List<Order> orders = new();
@@ -173,6 +177,11 @@ namespace Sandelio_app_1.controllers
                 }
             }
             return pallets;
+        }
+        public static string[] GetGIFs(string path)
+        {
+            string[] files = Directory.GetFiles(path, "*.gif");
+            return files;
         }
     }
 }
