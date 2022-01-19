@@ -1,9 +1,52 @@
-using Sandelio_app_1.controllers;
+﻿using Sandelio_app_1.controllers;
 using System.Diagnostics;
+using System.Drawing;
 using static Sandelio_app_1.controllers.Settings;
 
 namespace Sandelio_app_1.classes
 {
+    internal class Picture
+    {
+        private readonly string path;
+        private int height;
+        private int width;
+        public Picture(string path){
+            this.path = path;
+        }
+        public string Path => path;
+        public int Height{
+            get
+            {
+                if (height == 0)
+                {
+                    height = new Bitmap(path).Height;
+                    width = new Bitmap(path).Width;
+                }
+                return height;
+            }
+        }
+        public int Width{
+            get{
+                if(width == 0){
+                    width = new Bitmap(path).Width;
+                    height = new Bitmap(path).Height;
+                }
+                return width;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            // compare if the path is the same
+            return obj is Picture picture &&
+                   path == picture.path;
+        }
+
+        public override string ToString()
+        {
+            return Path;
+        }
+    }
     internal class Item
     {
         public Item Parent { get; set; }
@@ -17,7 +60,8 @@ namespace Sandelio_app_1.classes
         private readonly string clientInfo;
         private readonly string name;
 
-        private readonly string picture;
+        public Picture Picture { get { return picture;} }
+        private readonly Picture picture;
         private readonly int orderNumber;
         private readonly int positionNumber;
         private readonly int width; // x
@@ -42,13 +86,14 @@ namespace Sandelio_app_1.classes
         /// <param name="weight">Weight in kg</param>
         /// <param name="name">Name of the item</param>
 
-        public Item(string name, int width, int length, int height, int weight)
+        public Item(string name, int width, int length, int height, int weight, string picture)
         {
             this.width = width;
             this.length = length;
             this.height = height;
             this.weight = weight;
             this.name = name;
+            this.picture = new(picture);
         }
         /// <summary>
         /// Gets stack weight

@@ -93,7 +93,7 @@ namespace Sandelio_app_1.controllers
             return orders;
         }
         // a function that takes a list of orders and creates pallets for them
-        public static List<Pallet> CreatePallets(List<Order> orders)
+        public static List<Pallet> CreatePallets(List<Order> orders, string filepath)
         {
             List<Pallet> pallets = new();
             // where order.Alone is false, take that order's items and add them to a separate list
@@ -118,6 +118,8 @@ namespace Sandelio_app_1.controllers
                     }
                 }
             }
+            // remove last char from order.Number
+            orderNumber = orderNumber.Remove(orderNumber.Length - 2);
             // remove all orders where order.Alone is false
             for (int h = 0; h < orders.Count; h++)
             {
@@ -132,7 +134,7 @@ namespace Sandelio_app_1.controllers
             {
                 for (int i = 0; i < element.Amount; i++)
                 {
-                    items.Add(new Item(element.Name, element.Width, element.Length, element.Height, element.Weight));
+                    items.Add(new Item(element.Name, element.Width, element.Length, element.Height, element.Weight, filepath + "\\" + element.Picture));
                 }
             }
             // while items.Count > 0, create a new pallet and add it to the list
@@ -158,7 +160,7 @@ namespace Sandelio_app_1.controllers
                 {
                     for (int i = 0; i < element.Amount; i++)
                     {
-                        items.Add(new Item(element.Name, element.Width, element.Height, element.Length, element.Weight));
+                        items.Add(new Item(element.Name, element.Width, element.Height, element.Length, element.Weight, filepath + "\\" + element.Picture));
                     }
                 }
                 // while list not empty create pallet and initialize it with items list

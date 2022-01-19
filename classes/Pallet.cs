@@ -185,6 +185,10 @@ namespace Sandelio_app_1.classes
                 default:
             }
         }
+        /// <summary>
+        /// Get total height of the pallet
+        /// </summary>
+        /// <returns>Height of pallet in cm</returns>
         public int GetTotalHeight()
         {
             // find largest item.GetStackHeight() value and add Settings.PalletHeight to it, then return it
@@ -212,6 +216,42 @@ namespace Sandelio_app_1.classes
                 tempStringArray[tempIndex] += tempList[i].ToString();
             }
             return tempStringArray;
+        }
+        /// <summary>
+        /// Gets all pictures of items on the pallet
+        /// </summary>
+        /// <returns>An array with all pictures</returns>
+        public Picture[] GetPictures()
+        {
+            // iterate through ItemsList and add each item's drawing to the array, then remove duplicate entries
+            Picture[] pictureArray = new Picture[ItemsList.Count];
+            int tempIndex = 0;
+            foreach (Item item in ItemsList)
+            {
+                pictureArray[tempIndex] = item.Picture;
+                tempIndex++;
+            }
+            // remove duplicate entries
+            List<string> uniqueEntries = new();
+            foreach (Picture picture in pictureArray)
+            {
+                if (!uniqueEntries.Contains(picture.Path))
+                {
+                    uniqueEntries.Add(picture.Path);
+                }
+            }
+            Picture[] temp = new Picture[uniqueEntries.Count];
+            for (int i = 0; i < uniqueEntries.Count; i++)
+            {
+                for (int j = 0; j < pictureArray.Length; j++)
+                {
+                    if (uniqueEntries[i] == pictureArray[j].Path)
+                    {
+                        temp[i] = pictureArray[j];
+                    }
+                }
+            }
+            return temp;
         }
 
         public override string ToString()

@@ -107,7 +107,7 @@ namespace Sandelio_app_1
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             List<Order> a = FileIO.GenerateOrders();
-            List<Pallet> b = FileIO.CreatePallets(a);
+            List<Pallet> b = FileIO.CreatePallets(a, "");
             pallet = b[0];
             ExperimentalMethod();
             //ExcelController.CreateFile(b, a[0].Name);
@@ -116,7 +116,7 @@ namespace Sandelio_app_1
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             // Open a file dialog and get file path to a json file, then save that path to a string
-            string filePath = null;
+            string filepath = null;
             CommonOpenFileDialog openFolderDialog = new();
             openFolderDialog.InitialDirectory = "c:\\";
             openFolderDialog.RestoreDirectory = true;
@@ -124,23 +124,22 @@ namespace Sandelio_app_1
             openFolderDialog.Title = "Browse folders";
             if (openFolderDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                filePath = openFolderDialog.FileName;
+                filepath = openFolderDialog.FileName;
             }
             // If the file path is not null, then read the file and deserialize it to a list of orders
-            if (filePath != null)
+            if (filepath != null)
             {
-                List<Order> orders = FileIO.ReadFile(filePath + "\\" + "orders.json");
+                List<Order> orders = FileIO.ReadFile(filepath + "\\" + "orders.json");
                 // If the list of orders is not null, then create a list of pallets from the list of orders
                 if (orders != null)
                 {
-                    List<Pallet> pallets = FileIO.CreatePallets(orders);
+                    List<Pallet> pallets = FileIO.CreatePallets(orders, filepath);
                     // If the list of pallets is not null, then create a list of pallets from the list of pallets
                     if (pallets != null)
                     {
                         pallet = pallets[0];
                         ExperimentalMethod();
-                        string[] picturesPaths = FileIO.GetGIFs(filePath);
-                        ExcelController.CreateFile(pallets, orders[0].Name, picturesPaths);
+                        ExcelController.CreateFile(pallets, orders[0].Name);
                     }
                 }
             }
