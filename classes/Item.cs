@@ -17,21 +17,26 @@ namespace Sandelio_app_1.classes
         public int Height{
             get
             {
-                if (height == 0)
-                {
-                    height = new Bitmap(path).Height;
-                    width = new Bitmap(path).Width;
-                }
+                GetDimensionsFromFile();
                 return height;
             }
         }
+
         public int Width{
-            get{
-                if(width == 0){
-                    width = new Bitmap(path).Width;
-                    height = new Bitmap(path).Height;
-                }
+            get
+            {
+                GetDimensionsFromFile();
                 return width;
+            }
+        }
+
+        // if height or width is empty then load image dimensions
+        private void GetDimensionsFromFile()
+        {
+            if (height == 0 || width == 0)
+            {
+                height = new Bitmap(path).Height;
+                width = new Bitmap(path).Width;
             }
         }
 
