@@ -33,65 +33,83 @@ namespace Sandelio_app_1.classes
         /// <returns>List with unused items in the stacking process</returns>
         public List<Item> Initialize(List<Item> items)
         {
-            if (Length == 0 || Width == 0)
-            {
-                AutoSize(items);
-            }
+            // If the pallet is empty, initialize it
+            if (Length == 0 || Width == 0) AutoSize(items);
+
             // cursor refers to current position of item placement on pallet
             int cursorPositionX = 0;
             int cursorPositionY = 0;
             // First largest item gets placed manually, because it's
             // Gonna be alone in it's row anyway
             int biggestItemIndex = items.FindIndex(x => x.Length == Length);
+            // Gets the biggest item
             Item largestPossibleItem = items[biggestItemIndex];
+            // Removes the item from the list
             items.RemoveAt(biggestItemIndex);
+            // Adds the item to the pallet
             ItemsList.Add(largestPossibleItem);
+            // Sets the cursor to the next line position
             cursorPositionY += largestPossibleItem.Width;
             while (true)
             {
                 // Creates initial layer
                 // Add that when creating a line it remembers max width of item in that line not last item placed
+                int largestWidthInLine = 0;
                 while (true)
                 {
+                    // Calculates horizontal space left in that line of the pallet
                     int spaceLeftX = Length - cursorPositionX;
+                    // Filters out items that are too big to fit in the space left
                     IEnumerable<Item> tempList = items.Where(x => x.Length <= spaceLeftX);
+                    // if no items left in the list or cursor is beyond the bounds of pallet, break out of the loop
                     if (!tempList.Any() || cursorPositionX >= Length)
                     {
+                        // resets X position
                         cursorPositionX = 0;
-                        cursorPositionY += ItemsList[^1].Width;
+                        // moves Y down as much as largest Width of item in that line
+                        cursorPositionY += largestWidthInLine;
                         break;
                     }
                     else
                     {
+                        // Orders items by length and then takes the longest one
                         largestPossibleItem = tempList.OrderByDescending(x => x.Length).First();
+                        // Finds that item's index in the list, needed for operations
                         biggestItemIndex = items.FindIndex(x => x.Length == largestPossibleItem.Length);
+                        // Removes that item from the list
                         items.RemoveAt(biggestItemIndex);
+                        // Sets that item's X and Y positions to the cursor
                         largestPossibleItem.X = cursorPositionX;
                         largestPossibleItem.Y = cursorPositionY;
+                        // Adds that item to the list of items on the pallet
                         ItemsList.Add(largestPossibleItem);
+                        // Moves cursor to the right as much as the item's Length
                         cursorPositionX += largestPossibleItem.Length;
+                        // Updates largest Y as much as the item's Width if the width is bigger than the current largest
+                        if(largestPossibleItem.Width > largestWidthInLine) largestWidthInLine = largestPossibleItem.Width;
                     }
                 }
-                // temp used to calculate if next row if items will be out of boundaries
-                if (items.Count == 0)
-                {
-                    break;
-                }
-                int temp = cursorPositionY + items.Min(x => x.Width);
-                if (temp >= Width)
-                {
-                    break;
-                }
+                // If there are no items left in the list, break out of the loop
+                if (items.Count == 0) break;
+                
+                // Check if there is enough space for the next item
+                int nextRowCursorPositionY = cursorPositionY + items.Min(x => x.Width);
+                if (nextRowCursorPositionY >= Width) break;
             }
             // Stacking items phase
             while (true)
             {
                 bool inserted = false;
+                // Foreach already placed item on the pallet
                 foreach (Item item in ItemsList)
                 {
+                    // Check if any of the items can be stacked on top
                     for (int i = 0; i < items.Count; i++)
                     {
+                        // True if the item can be stacked on top
                         inserted = item.AddItemOnStack(items[i]);
+
+                        // If the item was stacked, remove it from the list
                         if (inserted)
                         {
                             items.RemoveAt(i);
@@ -99,12 +117,12 @@ namespace Sandelio_app_1.classes
                         }
                     }
                 }
-                if (!inserted)
-                {
-                    break;
-                }
+                // If no items were stacked, break out of the loop
+                if (!inserted) break;
             }
+
             // after stacking check if possible to expand pallet to accomodate more items
+            // Not really efficient but calculations are still in the hundreds of cycles, so it's fine
             if (items.Count > 0)
             {
                 if (Width == 600)
@@ -126,6 +144,7 @@ namespace Sandelio_app_1.classes
             }
             return items;
         }
+        
         /// <summary>
         /// Calculates the total weight of all items on the pallet
         /// </summary>
