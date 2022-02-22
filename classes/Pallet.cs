@@ -223,21 +223,34 @@ namespace Sandelio_app_1.classes
             //}
             return Height;
         }
+        /// <summary>
+        /// Returns a string array with all the strings reprensenting the pallet and it's contents
+        /// </summary>
         public string[] ToStringArray()
         {
             // sort ItemList by Y. 
             string[] tempStringArray = new string[ItemsList.Count];
-            List<Item> tempList = ItemsList.OrderBy(x => x.Y).ToList();
-            int tempHeight = 0;
+            // temp item list is used to track the Y index of items, so you can tell when the pallet changes rows
+            List<Item> tempItemList = ItemsList.OrderBy(x => x.Y).ToList();
+            int tempHeight = tempItemList.First().Y;
             int tempIndex = 0;
-            for (int i = 0; i < tempList.Count; i++)
+            for (int i = 0; i < tempItemList.Count; i++)
             {
-                if (tempHeight != tempList[i].Y)
+                if (tempHeight != tempItemList[i].Y)
                 {
-                    tempHeight = tempList[i].Y;
+                    tempHeight = tempItemList[i].Y;
                     tempIndex++;
+                } else {
+                    i++;
                 }
-                tempStringArray[tempIndex] += tempList[i].ToString();
+                tempStringArray[tempIndex] += tempItemList[i].ToString() + " + ";
+            }
+            // remove null strings
+            tempStringArray = tempStringArray.Where(x => x != null).ToArray();
+            // remove trailing " + " from each string
+            for (int i = 0; i < tempStringArray.Length; i++)
+            {
+                tempStringArray[i] = tempStringArray[i].Remove(tempStringArray[i].Length - 3);
             }
             return tempStringArray;
         }
