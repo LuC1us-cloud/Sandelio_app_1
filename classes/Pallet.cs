@@ -211,6 +211,11 @@ namespace Sandelio_app_1.classes
         public int GetTotalHeight()
         {
             // find largest item.GetStackHeight() value and add Settings.PalletHeight to it, then return it
+            // Debug each item.GetStackHeight() from ItemsList and print to Debug console
+            foreach (Item item in ItemsList)
+            {
+                Debug.WriteLine($"{item.GetStackHeight()} of {item.ToString()}");
+            }
             Height = ItemsList.Max(x => x.GetStackHeight()) + Settings.PalletHeight;
             //foreach (Item item in ItemsList)
             //{

@@ -1,4 +1,5 @@
 ﻿using Sandelio_app_1.controllers;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using static Sandelio_app_1.controllers.Settings;
@@ -10,11 +11,13 @@ namespace Sandelio_app_1.classes
         private readonly string path;
         private int height;
         private int width;
-        public Picture(string path){
+        public Picture(string path)
+        {
             this.path = path;
         }
         public string Path => path;
-        public int Height{
+        public int Height
+        {
             get
             {
                 GetDimensionsFromFile();
@@ -22,7 +25,8 @@ namespace Sandelio_app_1.classes
             }
         }
 
-        public int Width{
+        public int Width
+        {
             get
             {
                 GetDimensionsFromFile();
@@ -65,7 +69,7 @@ namespace Sandelio_app_1.classes
         private readonly string clientInfo;
         private readonly string name;
 
-        public Picture Picture { get { return picture;} }
+        public Picture Picture { get { return picture; } }
         private readonly Picture picture;
         private readonly int orderNumber;
         private readonly int positionNumber;
@@ -121,16 +125,31 @@ namespace Sandelio_app_1.classes
         /// Gets stack Height
         /// </summary>
         /// <returns>This plus all items on top height</returns>
-        public int GetStackHeight()
+        public int GetStackHeight(List<int> visitedLayers = null)
         {
             int totalHeight = 0;
-            totalHeight += height;
-            if (LayerHeight is 0 or 1)
+            if (visitedLayers == null)
             {
-                if (Child is not null)
-                {
-                    totalHeight += Child.GetStackHeight();
-                }
+                visitedLayers = new List<int>();
+            }
+
+            if (visitedLayers.Contains(LayerHeight))
+            {
+                return totalHeight;
+            }
+            else
+            {
+                visitedLayers.Add(LayerHeight);
+            }
+
+            totalHeight += height;
+            if (Child is not null)
+            {
+                totalHeight += Child.GetStackHeight(visitedLayers);
+            }
+            if (Parent is not null)
+            {
+                totalHeight += Parent.GetStackHeight(visitedLayers);
             }
             return totalHeight;
         }
@@ -142,14 +161,6 @@ namespace Sandelio_app_1.classes
         /// <returns>True if the top item fits on the bottom one</returns>
         private static bool FitsOnTop(Item bottom, Item top)
         {
-            // if (bottom.GetStackHeight() + top.GetStackHeight() <= MaxStackHeight
-            //     && bottom.width >= top.width && bottom.length >= top.length)
-            // {
-            //     Debug.WriteLine($"Max height is {MaxStackHeight} - Trying to stack {bottom.GetStackHeight()} plus {top.GetStackHeight()}");
-            //     Debug.WriteLine(bottom.GetStackHeight() + top.GetStackHeight() <= MaxStackHeight);
-            //     Debug.WriteLine($"Top {top.width}|{top.length}");
-            //     Debug.WriteLine($"Bot {bottom.width}|{bottom.length}");
-            // }
             return bottom.GetStackHeight() + top.GetStackHeight() <= MaxStackHeight
                 && bottom.width >= top.width && bottom.length >= top.length;
         }

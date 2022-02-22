@@ -242,7 +242,7 @@ namespace Sandelio_app_1.controllers
                 sheet.Cells[z + 6, 6] = pallets[z].Length;
                 sheet.Cells[z + 6, 7] = pallets[z].Width;
                 sheet.Cells[z + 6, 8] = pallets[z].Length + 50;
-                sheet.Cells[z + 6, 9] = $"{pallets[z].GetTotalHeight()}";
+                sheet.Cells[z + 6, 9] = $"{pallets[z].GetTotalHeight()}cm";
                 sheet.Cells[z + 6, 10] = $"{pallets[z].GetPalletWeight()}kg";
                 sheet.Cells[z + 6, 11] = "No";
                 sheet.Cells[z + 6, 12] = "";
