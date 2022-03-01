@@ -2,10 +2,6 @@
 using Sandelio_app_1.classes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Reflection;
 using System.Windows;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -64,7 +60,7 @@ namespace Sandelio_app_1.controllers
         {
             for (int i = 1; i < pallets.Count + 1; i++)
             {
-                Worksheet currentSheet = (Worksheet)workBook.Worksheets.Add();
+                Worksheet currentSheet = (Worksheet)workBook.Worksheets.Add(After: workBook.Sheets[workBook.Sheets.Count]);
                 currentSheet.Name = $"Pallet {i}";
 
                 Range range = currentSheet.Range[currentSheet.Cells[2, 1], currentSheet.Cells[4, 4]];
@@ -75,11 +71,12 @@ namespace Sandelio_app_1.controllers
                 currentSheet.Range[currentSheet.Cells[2, 2], currentSheet.Cells[2, 4]].Merge();
                 currentSheet.Cells[3, 1] = "Order nr.:";
                 currentSheet.Range[currentSheet.Cells[3, 1], currentSheet.Cells[4, 1]].Merge();
-                currentSheet.Cells[3, 3] = pallets[i - 1].PalletNumber;
+                currentSheet.Cells[3, 3] = pallets[i - 1].OrderNumber;
 
                 currentSheet.Range[currentSheet.Cells[3, 2], currentSheet.Cells[4, 4]].Merge();
                 currentSheet.Cells[8, 1] = "LDM:";
-                currentSheet.Cells[8, 2] = pallets[i - 1].Width * pallets[i - 1].Length / 1000 / 2.4;
+                // Čia blogai sudaugina, turi būt metrais
+                currentSheet.Cells[8, 2] = $"{pallets[i - 1].GetLDM()}";
                 currentSheet.Cells[8, 4] = "Height:";
                 currentSheet.Cells[8, 5] = pallets[i - 1].GetTotalHeight();
                 currentSheet.Cells[8, 7] = "Width:";
@@ -140,21 +137,22 @@ namespace Sandelio_app_1.controllers
                 range.Borders.LineStyle = XlLineStyle.xlContinuous;
                 range.Borders.Weight = XlBorderWeight.xlThin;
 
-                // this is the side of the 'pallet' that displays the width
-                currentSheet.Cells[10, 2] = $"{pallets[i - 1].Width}";
+                // this is the side of the 'pallet' that displays the length
+                currentSheet.Cells[10, 2] = $"{pallets[i - 1].Length}";
                 currentSheet.Range[currentSheet.Cells[10, 2], currentSheet.Cells[11, 11]].Merge();
                 range = currentSheet.Range[currentSheet.Cells[10, 2], currentSheet.Cells[11, 11]];
                 range.Borders.LineStyle = XlLineStyle.xlContinuous;
                 range.Borders.Weight = XlBorderWeight.xlThin;
 
-                // this is the side of the 'pallet' that displays the length
-                currentSheet.Cells[12, 1] = $"{pallets[i - 1].Length}";
+                // this is the side of the 'pallet' that displays the width
+                currentSheet.Cells[12, 1] = $"{pallets[i - 1].Width}";
                 currentSheet.Range[currentSheet.Cells[12, 1], currentSheet.Cells[31, 1]].Merge();
                 range = currentSheet.Range[currentSheet.Cells[12, 1], currentSheet.Cells[31, 1]];
                 range.Borders.LineStyle = XlLineStyle.xlContinuous;
                 range.Borders.Weight = XlBorderWeight.xlThin;
 
                 string[] tempArray = pallets[i - 1].ToStringArray();
+
                 for (int y = 12; y < 32; y++)
                 {
                     // this creates the lines in the 'pallet' view
@@ -198,7 +196,14 @@ namespace Sandelio_app_1.controllers
             range.Borders.Weight = XlBorderWeight.xlThin;
 
             sheet.Cells[3, 1] = "Total LDM:";
-            sheet.Cells[3, 3] = "1.5";
+            float totalLdm = 0;
+            for (int i = 0; i < pallets.Count; i++)
+            {
+                totalLdm += pallets[i].GetLDM();
+            }
+            // round to 2 decimals
+            totalLdm = (float)Math.Round(totalLdm, 2);
+            sheet.Cells[3, 3] = $"{totalLdm}";
             sheet.Range[sheet.Cells[3, 1], sheet.Cells[3, 2]].Merge();
             range = sheet.Range[sheet.Cells[3, 1], sheet.Cells[3, 3]];
             range.Borders.LineStyle = XlLineStyle.xlContinuous;
@@ -242,7 +247,7 @@ namespace Sandelio_app_1.controllers
                 sheet.Cells[z + 6, 6] = pallets[z].Length;
                 sheet.Cells[z + 6, 7] = pallets[z].Width;
                 sheet.Cells[z + 6, 8] = pallets[z].Length + 50;
-                sheet.Cells[z + 6, 9] = $"{pallets[z].GetTotalHeight()}cm";
+                sheet.Cells[z + 6, 9] = $"{pallets[z].GetTotalHeight()}";
                 sheet.Cells[z + 6, 10] = $"{pallets[z].GetPalletWeight()}kg";
                 sheet.Cells[z + 6, 11] = "No";
                 sheet.Cells[z + 6, 12] = "";
@@ -257,6 +262,7 @@ namespace Sandelio_app_1.controllers
             rng.VerticalAlignment = XlVAlign.xlVAlignCenter;
             // set all active cells NumberFormat to @
             rng.NumberFormat = "@";
+            sheet.Range[sheet.Cells[3, 3], sheet.Cells[3, 3]].NumberFormat = "0.00";
             sheet.Columns.AutoFit();
 
             sheet.Select();
@@ -266,7 +272,7 @@ namespace Sandelio_app_1.controllers
         private static Worksheet CreateDrawingsSheet(List<Pallet> pallets, string client, Workbook workBook)
         {
             // Drawings worksheet logic
-            Worksheet sheet = (Worksheet)workBook.Worksheets.Add();
+            Worksheet sheet = (Worksheet)workBook.Worksheets.Add(After: workBook.Sheets[workBook.Sheets.Count]);
             sheet.Name = "Drawings";
 
             // used for tracking which cell to write in

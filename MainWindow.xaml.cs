@@ -1,17 +1,11 @@
-﻿using Microsoft.Win32;
-using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using Sandelio_app_1.classes;
 using Sandelio_app_1.controllers;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Sandelio_app_1
 {
@@ -29,7 +23,6 @@ namespace Sandelio_app_1
 
         private const int drawingScale = 4;
         private static Pallet pallet = new(1);
-
 
         private void ExperimentalMethod()
         {
@@ -103,6 +96,7 @@ namespace Sandelio_app_1
             SettingsWindow settingsWindow = new();
             settingsWindow.ShowDialog();
         }
+
         // Top most button click
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -112,6 +106,7 @@ namespace Sandelio_app_1
             ExperimentalMethod();
             //ExcelController.CreateFile(b, a[0].Name);
         }
+
         // open folder button click
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -130,6 +125,7 @@ namespace Sandelio_app_1
             if (filepath != null)
             {
                 List<Order> orders = FileIO.ReadFile(filepath + "\\" + "orders.json");
+                string clientInfo = orders[0].ClientInfo;
                 // If the list of orders is not null, then create a list of pallets from the list of orders
                 if (orders != null)
                 {
@@ -137,13 +133,12 @@ namespace Sandelio_app_1
                     // If the list of pallets is not null, then create a list of pallets from the list of pallets
                     if (pallets != null)
                     {
-                        pallet = pallets[0];
-                        ExperimentalMethod();
-                        ExcelController.CreateFile(pallets, orders[0].Name);
+                        //pallet = pallets[0];
+                        //ExperimentalMethod();
+                        ExcelController.CreateFile(pallets, clientInfo);
                     }
                 }
             }
-
         }
     }
 }

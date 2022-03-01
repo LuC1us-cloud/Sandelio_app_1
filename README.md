@@ -54,3 +54,24 @@ third iteration:
 while possible to place something or items.Count > 0:
 place largest possible on top of second layer
 
+
+
+Problems:
+-- Probably orderNr is broken on non-Alone pallets, since it just writes all orders as one
+-- Drawings sheet some weird things are happening with sizing, sometimes goes out of bounds
+
+ ____
+/    
+| -- Weird stacking behaviour, items get placed in wrong Y coordinate (f.e. first item gets placed in 600, then stacking continues, then Y cursor reaches 600 and it get's placed there again) // FIXED
+| -- After getting placed on pallets, some Items start their Y position not on 0 // FIXED
+|
+\____ // FIXED, same issue caused both behaviours.
+
+-- One element get's lost in File Parsing // FIXED, coincadentally that was the glitch, which caused some files to not open
+-- LDM cell formatting still off, fractal numbers get written in like 0.999999 instead of 1 // FIXED
+-- When reading file client name was taken from list which can be empty. // FIXED
+-- Stacking doesn't take into account weight // FIXED
+-- Width Length excelyje sukeisti vietoms // DONE
+-- Prie kiekvienos prekės kodo Pallet 1 sheete, turi būt skliaustuose užsakymo nr. (pvz: V10(1)) // DONE
+-- When parsing Element data from file, individual items should remember their order, for reference. // DONE
+

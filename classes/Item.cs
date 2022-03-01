@@ -1,6 +1,4 @@
-﻿using Sandelio_app_1.controllers;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using static Sandelio_app_1.controllers.Settings;
 
@@ -11,11 +9,14 @@ namespace Sandelio_app_1.classes
         private readonly string path;
         private int height;
         private int width;
+
         public Picture(string path)
         {
             this.path = path;
         }
+
         public string Path => path;
+
         public int Height
         {
             get
@@ -56,6 +57,7 @@ namespace Sandelio_app_1.classes
             return Path;
         }
     }
+
     internal class Item
     {
         public Item Parent { get; set; }
@@ -69,9 +71,10 @@ namespace Sandelio_app_1.classes
         private readonly string clientInfo;
         private readonly string name;
 
-        public Picture Picture { get { return picture; } }
+        public Picture Picture
+        { get { return picture; } }
         private readonly Picture picture;
-        private readonly int orderNumber;
+        private readonly string orderNumber;
         private readonly int positionNumber;
         private readonly int width; // x
 
@@ -95,7 +98,7 @@ namespace Sandelio_app_1.classes
         /// <param name="weight">Weight in kg</param>
         /// <param name="name">Name of the item</param>
 
-        public Item(string name, int width, int length, int height, int weight, string picture)
+        public Item(string name, int width, int length, int height, int weight, string picture, string orderNumber)
         {
             this.width = width;
             this.length = length;
@@ -103,7 +106,9 @@ namespace Sandelio_app_1.classes
             this.weight = weight;
             this.name = name;
             this.picture = new(picture);
+            this.orderNumber = orderNumber;
         }
+
         /// <summary>
         /// Gets stack weight
         /// </summary>
@@ -121,6 +126,7 @@ namespace Sandelio_app_1.classes
             }
             return totalWeight;
         }
+
         /// <summary>
         /// Gets stack Height
         /// </summary>
@@ -153,6 +159,7 @@ namespace Sandelio_app_1.classes
             }
             return totalHeight;
         }
+
         /// <summary>
         /// Checks if bottom is larger than top
         /// </summary>
@@ -176,6 +183,7 @@ namespace Sandelio_app_1.classes
             {
                 if (LayerHeight is 0)
                 {
+                    // MaxStackWeight is the maximum possible weight stacked on an item, that means not including the base item
                     if (item.weight > MaxStackWeight || !FitsOnTop(this, item))
                     {
                         return false;
@@ -202,6 +210,7 @@ namespace Sandelio_app_1.classes
                 return LayerHeight is 0 or 1 && Child.AddItemOnStack(item);
             }
         }
+
         /// <summary>
         /// Pops top most item from stack
         /// </summary>
@@ -221,13 +230,14 @@ namespace Sandelio_app_1.classes
                 return this;
             }
         }
+
         /// <summary>
         /// To string formatting
         /// </summary>
         /// <returns>String representing full stack info</returns>
         public override string ToString()
         {
-            string temp = $"{name} ";
+            string temp = $"{name}({orderNumber}) ";
             if (Child is not null)
             {
                 temp += "/ " + Child.ToString();

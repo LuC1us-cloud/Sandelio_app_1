@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Sandelio_app_1.classes;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
-using Sandelio_app_1.classes;
 
 namespace Sandelio_app_1.controllers
 {
@@ -16,9 +15,27 @@ namespace Sandelio_app_1.controllers
         public int Width { get; set; }
         public int Weight { get; set; }
         public string Picture { get; set; }
+
         public override string ToString()
         {
             return $"{Name}, {Width}x{Length}x{Height}, {Weight}kg";
+        }
+    }
+
+    internal class ElementWithNr : Element
+    {
+        public string OrderNumber { get; set; }
+
+        public ElementWithNr(Element element, string orderNr)
+        {
+            OrderNumber = orderNr;
+            Name = element.Name;
+            Amount = element.Amount;
+            Length = element.Length;
+            Height = element.Height;
+            Width = element.Width;
+            Weight = element.Weight;
+            Picture = element.Picture;
         }
     }
 
@@ -40,7 +57,7 @@ namespace Sandelio_app_1.controllers
         // reads the file and returns a list of orders
         public static List<Order> ReadFile(string path)
         {
-            string json = System.IO.File.ReadAllText(path);
+            string json = File.ReadAllText(path);
             List<Order> orders = JsonSerializer.Deserialize<List<Order>>(json);
             return orders;
         }
@@ -53,7 +70,7 @@ namespace Sandelio_app_1.controllers
                 WriteIndented = true
             };
             string json = JsonSerializer.Serialize(orders, serializerOptions);
-            System.IO.File.WriteAllText(path, json);
+            File.WriteAllText(path, json);
         }
 
         // generates random orders. used for testing
@@ -92,12 +109,13 @@ namespace Sandelio_app_1.controllers
             }
             return orders;
         }
+
         // a function that takes a list of orders and creates pallets for them
         public static List<Pallet> CreatePallets(List<Order> orders, string filepath)
         {
             List<Pallet> pallets = new();
             // where order.Alone is false, take that order's items and add them to a separate list
-            List<Element> elements = new();
+            List<ElementWithNr> elements = new();
             string adress = "";
             string postcode = "";
             string city = "";
@@ -107,14 +125,14 @@ namespace Sandelio_app_1.controllers
             {
                 if (!order.Alone)
                 {
-                    orderNumber += order.Number + ", ";
+                    orderNumber += order.Name + ", ";
                     adress = order.Address;
                     postcode = order.PostCode;
                     city = order.City;
                     country = order.Country;
-                    foreach (Element element in order.Elements)
+                    foreach (var element in order.Elements)
                     {
-                        elements.Add(element);
+                        elements.Add(new ElementWithNr(element, order.Name));
                     }
                 }
             }
@@ -130,11 +148,11 @@ namespace Sandelio_app_1.controllers
             }
             // convert all elements to Item list
             List<Item> items = new();
-            foreach (Element element in elements)
+            foreach (var element in elements)
             {
                 for (int i = 0; i < element.Amount; i++)
                 {
-                    items.Add(new Item(element.Name, element.Width, element.Length, element.Height, element.Weight, filepath + "\\" + element.Picture));
+                    items.Add(new Item(element.Name, element.Width, element.Length, element.Height, element.Weight, filepath + "\\" + element.Picture, element.OrderNumber));
                 }
             }
             // while items.Count > 0, create a new pallet and add it to the list
@@ -154,13 +172,13 @@ namespace Sandelio_app_1.controllers
 
             foreach (Order order in orders)
             {
-                // convert order list to Item list 
+                // convert order list to Item list
                 items = new();
-                foreach (Element element in order.Elements)
+                foreach (var element in order.Elements)
                 {
                     for (int i = 0; i < element.Amount; i++)
                     {
-                        items.Add(new Item(element.Name, element.Width, element.Height, element.Length, element.Weight, filepath + "\\" + element.Picture));
+                        items.Add(new Item(element.Name, element.Width, element.Height, element.Length, element.Weight, filepath + "\\" + element.Picture, order.Name));
                     }
                 }
                 // while list not empty create pallet and initialize it with items list
@@ -168,7 +186,7 @@ namespace Sandelio_app_1.controllers
                 {
                     Pallet pallet = new(pallets.Count + 1)
                     {
-                        OrderNumber = order.Number.ToString(),
+                        OrderNumber = order.Name,
                         Adress = order.Address,
                         PostCode = order.PostCode,
                         City = order.City,
@@ -180,6 +198,7 @@ namespace Sandelio_app_1.controllers
             }
             return pallets;
         }
+
         public static string[] GetGIFs(string path)
         {
             string[] files = Directory.GetFiles(path, "*.gif");

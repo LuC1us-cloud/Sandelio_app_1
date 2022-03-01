@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="SettingsWindow" Height="400" Width="400">
     <Grid x:Name="OuterGrid" Background="#FF0C0E13">
-        
+        <Button Content="Save" Height="30" Margin="350,354,0,0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Button_Click"/>
     </Grid>
 </Window>

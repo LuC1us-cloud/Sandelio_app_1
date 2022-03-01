@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using Sandelio_app_1.controllers;
+﻿using Sandelio_app_1.controllers;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,8 @@ namespace Sandelio_app_1.classes
             int biggestItemIndex = items.FindIndex(x => x.Length == Length);
             // Gets the biggest item
             Item largestPossibleItem = items[biggestItemIndex];
+            largestPossibleItem.X = cursorPositionX;
+            largestPossibleItem.Y = cursorPositionY;
             // Removes the item from the list
             items.RemoveAt(biggestItemIndex);
             // Adds the item to the pallet
@@ -86,12 +89,12 @@ namespace Sandelio_app_1.classes
                         // Moves cursor to the right as much as the item's Length
                         cursorPositionX += largestPossibleItem.Length;
                         // Updates largest Y as much as the item's Width if the width is bigger than the current largest
-                        if(largestPossibleItem.Width > largestWidthInLine) largestWidthInLine = largestPossibleItem.Width;
+                        if (largestPossibleItem.Width > largestWidthInLine) largestWidthInLine = largestPossibleItem.Width;
                     }
                 }
                 // If there are no items left in the list, break out of the loop
                 if (items.Count == 0) break;
-                
+
                 // Check if there is enough space for the next item
                 int nextRowCursorPositionY = cursorPositionY + items.Min(x => x.Width);
                 if (nextRowCursorPositionY >= Width) break;
@@ -144,7 +147,7 @@ namespace Sandelio_app_1.classes
             }
             return items;
         }
-        
+
         /// <summary>
         /// Calculates the total weight of all items on the pallet
         /// </summary>
@@ -158,6 +161,7 @@ namespace Sandelio_app_1.classes
             }
             return weight;
         }
+
         /// <summary>
         /// Clears the pallet
         /// </summary>
@@ -204,6 +208,7 @@ namespace Sandelio_app_1.classes
                 default:
             }
         }
+
         /// <summary>
         /// Get total height of the pallet
         /// </summary>
@@ -223,12 +228,13 @@ namespace Sandelio_app_1.classes
             //}
             return Height;
         }
+
         /// <summary>
         /// Returns a string array with all the strings reprensenting the pallet and it's contents
         /// </summary>
         public string[] ToStringArray()
         {
-            // sort ItemList by Y. 
+            // sort ItemList by Y.
             string[] tempStringArray = new string[ItemsList.Count];
             // temp item list is used to track the Y index of items, so you can tell when the pallet changes rows
             List<Item> tempItemList = ItemsList.OrderBy(x => x.Y).ToList();
@@ -240,8 +246,6 @@ namespace Sandelio_app_1.classes
                 {
                     tempHeight = tempItemList[i].Y;
                     tempIndex++;
-                } else {
-                    i++;
                 }
                 tempStringArray[tempIndex] += tempItemList[i].ToString() + " + ";
             }
@@ -254,6 +258,7 @@ namespace Sandelio_app_1.classes
             }
             return tempStringArray;
         }
+
         /// <summary>
         /// Gets all pictures of items on the pallet
         /// </summary>
@@ -289,6 +294,20 @@ namespace Sandelio_app_1.classes
                 }
             }
             return temp;
+        }
+
+        /// <summary>
+        /// Gets LDM of the pallet
+        /// </summary>
+        /// <returns>LDM of the pallet</returns>
+        public float GetLDM()
+        {
+            // convert width and length to meters
+            // then multiply width and length and divide by 2.4
+            float ldm = Width / 1000f * Length / 1000f / 2.4f;
+            // format number to 0.00
+            ldm = (float)Math.Round(ldm, 2);
+            return ldm;
         }
 
         public override string ToString()
