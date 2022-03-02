@@ -139,7 +139,7 @@ namespace Sandelio_app_1.controllers
             // remove last char from order.Number
             orderNumber = orderNumber.Remove(orderNumber.Length - 2);
             // remove all orders where order.Alone is false
-            for (int h = 0; h < orders.Count; h++)
+            for (int h = orders.Count - 1; h >= 0; h--)
             {
                 if (!orders[h].Alone)
                 {
@@ -160,7 +160,6 @@ namespace Sandelio_app_1.controllers
             {
                 Pallet pallet = new(pallets.Count + 1)
                 {
-                    OrderNumber = orderNumber,
                     Adress = adress,
                     PostCode = postcode,
                     City = city,
@@ -186,7 +185,6 @@ namespace Sandelio_app_1.controllers
                 {
                     Pallet pallet = new(pallets.Count + 1)
                     {
-                        OrderNumber = order.Name,
                         Adress = order.Address,
                         PostCode = order.PostCode,
                         City = order.City,

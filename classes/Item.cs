@@ -75,6 +75,7 @@ namespace Sandelio_app_1.classes
         { get { return picture; } }
         private readonly Picture picture;
         private readonly string orderNumber;
+        public string OrderNumber => orderNumber;
         private readonly int positionNumber;
         private readonly int width; // x
 

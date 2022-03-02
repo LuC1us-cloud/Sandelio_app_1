@@ -14,7 +14,7 @@ namespace Sandelio_app_1.classes
         public string PostCode { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public string OrderNumber { get; set; }
+        public string OrderNumber { get => GetOrderNumber(); }
         public float PalletWeight { get; set; }
         public int PalletMaxHeight { get; set; }
         public int Length { get; set; }
@@ -180,6 +180,31 @@ namespace Sandelio_app_1.classes
                 temp.Add(item);
             }
             ItemsList = new();
+            return temp;
+        }
+        /// <summary>
+        /// Iterates through all items on the pallet and builds their order number string
+        /// </summary>
+        /// <returns>The order number string</returns>
+        private string GetOrderNumber()
+        {
+            // iterate through all items and their children on the pallet
+            // add their order number to a list, then remove duplicates and join the list to a string
+            List<string> orderNumberList = new();
+            foreach (Item item in ItemsList)
+            {
+                var currentItem = item;
+
+                orderNumberList.Add(currentItem.OrderNumber);
+                while (currentItem.Child != null)
+                {
+                    orderNumberList.Add(currentItem.Child.OrderNumber);
+                    currentItem = currentItem.Child;
+                }
+            }
+            orderNumberList = orderNumberList.Distinct().ToList();
+            string temp = string.Join(", ", orderNumberList);
+            
             return temp;
         }
 

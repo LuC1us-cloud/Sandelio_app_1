@@ -57,7 +57,6 @@ place largest possible on top of second layer
 
 
 Problems:
--- Probably orderNr is broken on non-Alone pallets, since it just writes all orders as one
 -- Drawings sheet some weird things are happening with sizing, sometimes goes out of bounds
 
  ____
@@ -67,6 +66,8 @@ Problems:
 |
 \____ // FIXED, same issue caused both behaviours.
 
+-- One Item now get's duplicated and an extra pallet is created // FIXED
+-- Probably orderNr is broken on non-Alone pallets, since it just writes all orders as one // FIXED
 -- One element get's lost in File Parsing // FIXED, coincadentally that was the glitch, which caused some files to not open
 -- LDM cell formatting still off, fractal numbers get written in like 0.999999 instead of 1 // FIXED
 -- When reading file client name was taken from list which can be empty. // FIXED
