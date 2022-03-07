@@ -29,7 +29,7 @@ namespace Sandelio_app_1.controllers
     public static class Settings
     {
         public static List<CountryOptions> countriesList = new();
-        public static int SelectedConfigIndex { get; set; } = 0;
+        public static int SelectedConfigIndex { get; set; }
         public static int Margin { get; set; } = 5;
         public static int MaxStackWeight => countriesList[SelectedConfigIndex].MaxStackWeight;
         public static int MaxStackHeight => countriesList[SelectedConfigIndex].MaxStackHeight;
@@ -40,7 +40,6 @@ namespace Sandelio_app_1.controllers
         public static void CreateNewCountry()
         {
             countriesList.Add(new CountryOptions());
-            System.Console.WriteLine();
         }
 
         public static void EditCountry(int index, string name, int maxStackWeight, int maxStackHeight, int palletHeight, int[] palletWidth, bool isAlone)

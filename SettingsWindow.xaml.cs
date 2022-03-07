@@ -10,9 +10,6 @@ namespace Sandelio_app_1
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        private int lastIndex = 0;
-        private bool listInitialized = false;
-        private bool modifiedList = false;
         private MainWindow mainWindow;
         public SettingsWindow()
         {
@@ -21,6 +18,7 @@ namespace Sandelio_app_1
         public SettingsWindow(MainWindow callingForm)
         {
             mainWindow = callingForm;
+            Owner = (Window)Parent;
             InitializeComponent();
         }
 
@@ -33,27 +31,13 @@ namespace Sandelio_app_1
         private void InitializeLocalData()
         {
             CountriesList.ItemsSource = controllers.Settings.countriesList;
-            // initialize text boxes with values from countrieslist[0]
-            ConfigNameTextBox.Text = controllers.Settings.countriesList[0].ConfigName;
-            MaxStackWeightTextBox.Text = controllers.Settings.countriesList[0].MaxStackWeight.ToString();
-            MaxStackHeightTextBox.Text = controllers.Settings.countriesList[0].MaxStackHeight.ToString();
-            PalletHeightTextBox.Text = controllers.Settings.countriesList[0].PalletHeight.ToString();
-            string palletWidth = "";
-            foreach (int i in controllers.Settings.countriesList[0].PalletWidth)
-            {
-                palletWidth += i.ToString() + ", ";
-            }
-            //remove last ", "
-            palletWidth = palletWidth.Remove(palletWidth.Length - 2);
-            PalletWidthTextBox.Text = palletWidth;
-            IsAloneTextBox.Text = controllers.Settings.countriesList[0].IsAlone.ToString();
+            CountriesList.SelectedIndex = controllers.Settings.SelectedConfigIndex;
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             // Add a new country to the dictionary with the key value "New Country"
             controllers.Settings.CreateNewCountry();
-            modifiedList = true;
             // Update the listbox
             CountriesList.Items.Refresh();
         }
@@ -61,47 +45,24 @@ namespace Sandelio_app_1
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             // Delete the selected country from the dictionary
-            modifiedList = true;
             controllers.Settings.DeleteCountry(CountriesList.SelectedIndex);
             CountriesList.Items.Refresh();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsDataValid())
-            {
-                return;
-            }
-            CountriesList.SelectedIndex = CountriesList.SelectedIndex;
+            controllers.Settings.SelectedConfigIndex = CountriesList.SelectedIndex;
             controllers.FileIO.SaveSettings();
             Close();
         }
 
         private void CountriesList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (!listInitialized)
-            {
-                listInitialized = true;
-                return;
-            }
-            if (modifiedList)
-            {
-                modifiedList = false;
-                return;
-            }
-
-            if(CountriesList.SelectedIndex != -1)
-            {
-                if (!IsDataValid())
-                {
-                    CountriesList.SelectedIndex = lastIndex;
-                    return;
-                }
-            }
             // if index out of bounds, set index to 0
             if (CountriesList.SelectedIndex < 0 || CountriesList.SelectedIndex >= controllers.Settings.countriesList.Count)
             {
                 CountriesList.SelectedIndex = 0;
+                return;
             }
             ConfigNameTextBox.Text = controllers.Settings.countriesList[CountriesList.SelectedIndex].ConfigName;
             MaxStackWeightTextBox.Text = controllers.Settings.countriesList[CountriesList.SelectedIndex].MaxStackWeight.ToString();
@@ -114,11 +75,8 @@ namespace Sandelio_app_1
             }
             // remove trailing ", "
             palletWidth = palletWidth.Substring(0, palletWidth.Length - 2);
-
             PalletWidthTextBox.Text = palletWidth;
             IsAloneTextBox.Text = controllers.Settings.countriesList[CountriesList.SelectedIndex].IsAlone.ToString();
-            
-            lastIndex = CountriesList.SelectedIndex;
         }
 
         private bool IsDataValid()
@@ -193,16 +151,10 @@ namespace Sandelio_app_1
                     palletWidthInt[i] = int.Parse(palletWidth[i]);
                 }
                 bool isAlone = bool.Parse(IsAloneTextBox.Text);
-                controllers.Settings.countriesList[lastIndex].ConfigName = ConfigNameTextBox.Text;
-                controllers.Settings.countriesList[lastIndex].MaxStackWeight = maxStackWeight;
-                controllers.Settings.countriesList[lastIndex].MaxStackHeight = maxStackHeight;
-                controllers.Settings.countriesList[lastIndex].PalletHeight = palletHeight;
-                controllers.Settings.countriesList[lastIndex].PalletWidth = palletWidthInt;
-                controllers.Settings.countriesList[lastIndex].IsAlone = isAlone;
             }
             catch (Exception)
             {
-                MessageBox.Show("Error parsing data");
+                MessageBox.Show($"Error parsing data {Environment.NewLine}Make sure all fields are filled in correctly {Environment.NewLine}and that the data is in the correct format");
                 // reset textboxes
                 if(controllers.Settings.countriesList.Count == 0)
                 {
@@ -214,18 +166,18 @@ namespace Sandelio_app_1
                     IsAloneTextBox.Text = "";
                     return false;
                 }
-                MaxStackWeightTextBox.Text = controllers.Settings.countriesList[lastIndex].MaxStackWeight.ToString();
-                MaxStackHeightTextBox.Text = controllers.Settings.countriesList[lastIndex].MaxStackHeight.ToString();
-                PalletHeightTextBox.Text = controllers.Settings.countriesList[lastIndex].PalletHeight.ToString();
+                MaxStackWeightTextBox.Text = controllers.Settings.countriesList[CountriesList.SelectedIndex].MaxStackWeight.ToString();
+                MaxStackHeightTextBox.Text = controllers.Settings.countriesList[CountriesList.SelectedIndex].MaxStackHeight.ToString();
+                PalletHeightTextBox.Text = controllers.Settings.countriesList[CountriesList.SelectedIndex].PalletHeight.ToString();
                 string palletWidth = "";
-                foreach (int i in controllers.Settings.countriesList[lastIndex].PalletWidth)
+                foreach (int i in controllers.Settings.countriesList[CountriesList.SelectedIndex].PalletWidth)
                 {
                     palletWidth += i.ToString() + ", ";
                 }
                 // remove trailing ", "
                 palletWidth = palletWidth[0..^2];
                 PalletWidthTextBox.Text = palletWidth;
-                IsAloneTextBox.Text = controllers.Settings.countriesList[lastIndex].IsAlone.ToString();
+                IsAloneTextBox.Text = controllers.Settings.countriesList[CountriesList.SelectedIndex].IsAlone.ToString();
                 return false;
             }
             return true;
@@ -237,6 +189,27 @@ namespace Sandelio_app_1
             {
                 DragMove();
             }
+        }
+
+        private void SaveConfigButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsDataValid())
+            {
+                controllers.Settings.countriesList[CountriesList.SelectedIndex].ConfigName = ConfigNameTextBox.Text;
+                controllers.Settings.countriesList[CountriesList.SelectedIndex].MaxStackWeight = int.Parse(MaxStackWeightTextBox.Text);
+                controllers.Settings.countriesList[CountriesList.SelectedIndex].MaxStackHeight = int.Parse(MaxStackHeightTextBox.Text);
+                controllers.Settings.countriesList[CountriesList.SelectedIndex].PalletHeight = int.Parse(PalletHeightTextBox.Text);
+                string[] palletWidth = PalletWidthTextBox.Text.Split(',');
+                int[] palletWidthInt = new int[palletWidth.Length];
+                for (int i = 0; i < palletWidth.Length; i++)
+                {
+                    palletWidthInt[i] = int.Parse(palletWidth[i]);
+                }
+                controllers.Settings.countriesList[CountriesList.SelectedIndex].PalletWidth = palletWidthInt;
+                controllers.Settings.countriesList[CountriesList.SelectedIndex].IsAlone = bool.Parse(IsAloneTextBox.Text);
+            }
+            //refresh view
+            CountriesList.Items.Refresh();
         }
     }
 }

@@ -58,13 +58,13 @@ place largest possible on top of second layer
 
 Problems:
 -- Drawings sheet some weird things are happening with sizing, sometimes goes out of bounds
--- FIX: Delete config fuckery, just rewrite everything.
 
 ADD:
 -- Add 5cm buffer to windows only if 2 or more are in the same row.
 // Su item buffer pabandyt matematiškai apžaist, kad nereiktų daug keisti, kitu atvėju nuimt bufferį visiškai ir pridėt kažkokį local skaičiavimą.
 
 DONE:
+-- FIX: Delete config fuckery, just rewrite everything. // DONE
 -- Add settings window with country selector.
 -- Add loading animation, to know if the program has died.
 -- Weird stacking behaviour, items get placed in wrong Y coordinate (f.e. first item gets placed in 600, then stacking continues, then Y cursor reaches 600 and it get's placed there again) // FIXED
