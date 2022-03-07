@@ -17,13 +17,14 @@ namespace Sandelio_app_1
     {
         public MainWindow()
         {
-            FileIO.WriteOrders(FileIO.GenerateOrders(), "items.json");
+            FileIO.LoadSettings();
             InitializeComponent();
         }
 
         private const int drawingScale = 4;
         private static Pallet pallet = new(1);
 
+        // Not used, left as reference for visualizing the pallet
         private void ExperimentalMethod()
         {
             Border palletBorder = new()
@@ -93,23 +94,14 @@ namespace Sandelio_app_1
         // settigs menu opener
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            SettingsWindow settingsWindow = new();
-            settingsWindow.ShowDialog();
-        }
-
-        // Top most button click
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            List<Order> a = FileIO.GenerateOrders();
-            List<Pallet> b = FileIO.CreatePallets(a, "");
-            pallet = b[0];
-            ExperimentalMethod();
-            //ExcelController.CreateFile(b, a[0].Name);
+            SettingsWindow settingsWindow = new(this);
+            _ = settingsWindow.ShowDialog();
         }
 
         // open folder button click
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            LoadingLabel.Content = "Loading...";
             // Open a file dialog and get file path to a json file, then save that path to a string
             string filepath = null;
             CommonOpenFileDialog openFolderDialog = new();
@@ -133,12 +125,11 @@ namespace Sandelio_app_1
                     // If the list of pallets is not null, then create a list of pallets from the list of pallets
                     if (pallets != null)
                     {
-                        //pallet = pallets[0];
-                        //ExperimentalMethod();
                         ExcelController.CreateFile(pallets, clientInfo);
                     }
                 }
             }
+            LoadingLabel.Content = "";
         }
     }
 }

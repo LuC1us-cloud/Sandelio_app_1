@@ -20,25 +20,14 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0"
-                Grid.Column="0"
-                Width="30"
-                Height="30"
-                Margin="5"
-                CornerRadius="5"
-                Background="#FF272A30"
-                HorizontalAlignment="Left">
-            <Button x:Name="Settings" Content="Ο" Width="30" Height="30" FontWeight="SemiBold" Background="Transparent" Foreground="#FFDADCE1" BorderThickness="0" Click="Settings_Click"/>
-        </Border>
-        
         <Grid Grid.Row="1"
               Grid.Column="0">
             <Border  Margin="15"
                      CornerRadius="7"
                      Background="#FF181A20">
                 <StackPanel>
-                    <Button Content="Open excel" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Button_Click"/>
-                    <Button Content="Read file" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Button_Click_1"/>
+                    <Button Content="Open Folder" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Button_Click_1"/>
+                    <Button Content="Settings" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Settings_Click"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -52,7 +41,9 @@
             <Canvas x:Name="canvas"
                 AllowDrop="True"
                 Drop="Canvas_Drop"
-                Background="#FF0E1015"/>
+                Background="#FF0E1015">
+                <Label x:Name="LoadingLabel" Content="" Height="458" Width="864" Background="Transparent" Foreground="White" FontSize="72" Visibility="Visible" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Canvas>
 
         </Border>
     </Grid>

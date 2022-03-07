@@ -47,9 +47,9 @@ namespace Sandelio_app_1.controllers
             catch (Exception theException)
             {
                 string errorMessage;
-                errorMessage = "Error: ";
+                errorMessage = "Error: \n";
                 errorMessage = string.Concat(errorMessage, theException.Message);
-                errorMessage = string.Concat(errorMessage, " Line: ");
+                errorMessage = string.Concat(errorMessage, "\n");
                 errorMessage = string.Concat(errorMessage, theException.Source);
 
                 _ = MessageBox.Show(errorMessage, "Error");

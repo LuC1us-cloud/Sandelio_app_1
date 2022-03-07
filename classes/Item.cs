@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Windows;
 using static Sandelio_app_1.controllers.Settings;
 
 namespace Sandelio_app_1.classes
@@ -40,8 +42,22 @@ namespace Sandelio_app_1.classes
         {
             if (height == 0 || width == 0)
             {
-                height = new Bitmap(path).Height;
-                width = new Bitmap(path).Width;
+                try
+                {
+                    Bitmap bmp = new(path);
+                    height = bmp.Height;
+                    width = bmp.Width;
+                }
+                catch (Exception theException){
+                    
+                    string errorMessage;
+                    errorMessage = "Error: ";
+                    errorMessage = string.Concat(errorMessage, theException.Message);
+                    errorMessage = string.Concat(errorMessage, " Line: ");
+                    errorMessage = string.Concat(errorMessage, theException.Source);
+                    errorMessage = string.Concat(errorMessage, $"\n\nProbable cause is a missing file: {path}");
+                    MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 

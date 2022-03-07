@@ -61,6 +61,52 @@ namespace Sandelio_app_1.controllers
             List<Order> orders = JsonSerializer.Deserialize<List<Order>>(json);
             return orders;
         }
+        internal class SettingsJson
+        {
+            // this class has a dictionary for countries and a string for currentSelectedCountry
+            public int selectedCountryIndex { get; set; }
+            public List<CountryOptions> countriesList { get; set; }
+        }
+        public static void SaveSettings()
+        {
+            JsonSerializerOptions serializerOptions = new()
+            {
+                WriteIndented = true
+            };
+            SettingsJson temporarySettings = new SettingsJson()
+            {
+                selectedCountryIndex = Settings.SelectedConfigIndex,
+                countriesList = Settings.countriesList
+            };
+            string json = JsonSerializer.Serialize(temporarySettings, serializerOptions);
+            // check if A folder called "settings" exists, if not create it
+            // then write all data to a file called "settings.json"
+            if (!Directory.Exists("settings"))
+            {
+                Directory.CreateDirectory("settings");
+            }
+            File.WriteAllText("settings\\settings.json", json);
+        }
+        public static void LoadSettings()
+        {
+            // if file does not exist
+            // Check if file exists, if not 
+            SettingsJson tempSettings = new();
+            if (!File.Exists("settings\\settings.json"))
+            {
+                tempSettings.selectedCountryIndex = 0;
+                tempSettings.countriesList = new();
+                tempSettings.countriesList.Add(new CountryOptions());
+            }
+            else
+            {
+                // if file does exist
+                string json = File.ReadAllText("settings\\settings.json");
+                tempSettings = JsonSerializer.Deserialize<SettingsJson>(json);
+            }
+            Settings.SelectedConfigIndex = tempSettings.selectedCountryIndex;
+            Settings.countriesList = tempSettings.countriesList;
+        }
 
         // writes the list of orders to the file
         public static void WriteOrders(List<Order> orders, string path)
@@ -113,6 +159,16 @@ namespace Sandelio_app_1.controllers
         // a function that takes a list of orders and creates pallets for them
         public static List<Pallet> CreatePallets(List<Order> orders, string filepath)
         {
+            // if Settings.IsAlone = true then set each order.Alone to true
+            if (Settings.IsAlone)
+            {
+                foreach (Order order in orders)
+                {
+                    order.Alone = true;
+                }
+            }
+
+
             List<Pallet> pallets = new();
             // where order.Alone is false, take that order's items and add them to a separate list
             List<ElementWithNr> elements = new();
