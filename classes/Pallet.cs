@@ -10,6 +10,8 @@ namespace Sandelio_app_1.classes
     internal class Pallet
     {
         public int PalletNumber { get; set; }
+        public string LoadingDate { get; set; }
+        public string ClientName { get; set; }
         public string Adress { get; set; }
         public string PostCode { get; set; }
         public string City { get; set; }
@@ -88,6 +90,8 @@ namespace Sandelio_app_1.classes
                         ItemsList.Add(largestPossibleItem);
                         // Moves cursor to the right as much as the item's Length
                         cursorPositionX += largestPossibleItem.Length;
+                        // Adds horizontal margin between items
+                        cursorPositionX += Settings.HorizontalMargin;
                         // Updates largest Y as much as the item's Width if the width is bigger than the current largest
                         if (largestPossibleItem.Width > largestWidthInLine) largestWidthInLine = largestPossibleItem.Width;
                     }
@@ -194,11 +198,13 @@ namespace Sandelio_app_1.classes
             foreach (Item item in ItemsList)
             {
                 var currentItem = item;
-
-                orderNumberList.Add(currentItem.OrderNumber);
+                // if item.ClientName is empty or null, string clientName should be empty, else it should be $"({item.ClientName})"
+                string clientName = string.IsNullOrEmpty(item.ClientName) ? "" : $"({item.ClientName})";
+                orderNumberList.Add($"{currentItem.OrderNumber}{clientName}");
                 while (currentItem.Child != null)
                 {
-                    orderNumberList.Add(currentItem.Child.OrderNumber);
+                    clientName = string.IsNullOrEmpty(currentItem.Child.ClientName) ? "" : $"({currentItem.Child.ClientName})";
+                    orderNumberList.Add($"{currentItem.Child.OrderNumber}{clientName}");
                     currentItem = currentItem.Child;
                 }
             }
@@ -329,7 +335,8 @@ namespace Sandelio_app_1.classes
         {
             // convert width and length to meters
             // then multiply width and length and divide by 2.4
-            float ldm = Width / 1000f * Length / 1000f / 2.4f;
+            // plus 50 on Length is added because of the extra borders of the pallet when shipping
+            float ldm = Width / 1000f * (Length + 50f) / 1000f / 2.4f;
             // format number to 0.00
             ldm = (float)Math.Round(ldm, 2);
             return ldm;

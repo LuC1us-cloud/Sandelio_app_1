@@ -25,10 +25,12 @@ namespace Sandelio_app_1.controllers
     internal class ElementWithNr : Element
     {
         public string OrderNumber { get; set; }
+        public string ClientName {get;set;}
 
-        public ElementWithNr(Element element, string orderNr)
+        public ElementWithNr(Element element, string orderNr, string clientName)
         {
             OrderNumber = orderNr;
+            ClientName = clientName;
             Name = element.Name;
             Amount = element.Amount;
             Length = element.Length;
@@ -50,6 +52,9 @@ namespace Sandelio_app_1.controllers
         public string City { get; set; }
         public string Country { get; set; }
         public List<Element> Elements { get; set; }
+
+        public string LoadingDate { get; set; }
+        public string ClientName { get; set; }
     }
 
     internal class FileIO
@@ -188,7 +193,7 @@ namespace Sandelio_app_1.controllers
                     country = order.Country;
                     foreach (var element in order.Elements)
                     {
-                        elements.Add(new ElementWithNr(element, order.Name));
+                        elements.Add(new ElementWithNr(element, order.Name, order.ClientName));
                     }
                 }
             }
@@ -208,7 +213,7 @@ namespace Sandelio_app_1.controllers
             {
                 for (int i = 0; i < element.Amount; i++)
                 {
-                    items.Add(new Item(element.Name, element.Width, element.Length, element.Height, element.Weight, filepath + "\\" + element.Picture, element.OrderNumber));
+                    items.Add(new Item(element.Name, element.Width, element.Length, element.Height, element.Weight, filepath + "\\" + element.Picture, element.OrderNumber, element.ClientName));
                 }
             }
             // while items.Count > 0, create a new pallet and add it to the list
@@ -233,7 +238,7 @@ namespace Sandelio_app_1.controllers
                 {
                     for (int i = 0; i < element.Amount; i++)
                     {
-                        items.Add(new Item(element.Name, element.Width, element.Height, element.Length, element.Weight, filepath + "\\" + element.Picture, order.Name));
+                        items.Add(new Item(element.Name, element.Width, element.Height, element.Length, element.Weight, filepath + "\\" + element.Picture, order.Name, order.ClientName));
                     }
                 }
                 // while list not empty create pallet and initialize it with items list

@@ -117,6 +117,7 @@ namespace Sandelio_app_1
             if (filepath != null)
             {
                 List<Order> orders = FileIO.ReadFile(filepath + "\\" + "orders.json");
+                string loadingDate = orders[0].LoadingDate;
                 string clientInfo = orders[0].ClientInfo;
                 // If the list of orders is not null, then create a list of pallets from the list of orders
                 if (orders != null)
@@ -125,7 +126,7 @@ namespace Sandelio_app_1
                     // If the list of pallets is not null, then create a list of pallets from the list of pallets
                     if (pallets != null)
                     {
-                        ExcelController.CreateFile(pallets, clientInfo);
+                        ExcelController.CreateFile(pallets, clientInfo, loadingDate);
                     }
                 }
             }

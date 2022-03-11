@@ -30,7 +30,8 @@ namespace Sandelio_app_1.controllers
     {
         public static List<CountryOptions> countriesList = new();
         public static int SelectedConfigIndex { get; set; }
-        public static int Margin { get; set; } = 5;
+        public static int BoxMargin { get; set; } = 0;
+        public static int HorizontalMargin { get; set; } = 50;
         public static int MaxStackWeight => countriesList[SelectedConfigIndex].MaxStackWeight;
         public static int MaxStackHeight => countriesList[SelectedConfigIndex].MaxStackHeight;
         public static int PalletHeight => countriesList[SelectedConfigIndex].PalletHeight;

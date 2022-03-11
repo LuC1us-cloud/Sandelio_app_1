@@ -58,12 +58,19 @@ place largest possible on top of second layer
 
 Problems:
 -- Drawings sheet some weird things are happening with sizing, sometimes goes out of bounds
+-- Atpažinti "CWT" daiktus ir žinoti, kad virš jų dedasi tik tokio pat ilgio, arba išvis negali dėtis
+-- Excel drawings sheet give images a margin, and bottom margin should be double, write amount of pieces below image
+
 
 ADD:
--- Add 5cm buffer to windows only if 2 or more are in the same row.
-// Su item buffer pabandyt matematiškai apžaist, kad nereiktų daug keisti, kitu atvėju nuimt bufferį visiškai ir pridėt kažkokį local skaičiavimą.
 
 DONE:
+-- Atsiras ClientName, kurį reikės pridėt kur rašo Order Nr kaip string tsg. // DONE
+-- LoadingDate atsiras failuose, ji turi prisidėti excelyje kaip žodis // DONE
+-- Panaikinti laikinai BAR CODE // DONE
+-- Pallet 1 Length, turėtų būt jau su pridėtu 50mm, tai keičia LDM, bet turi nesikeisti Pallet List // DONE
+-- Check if stack weight works correctly // DONE
+-- Add 5cm buffer to windows only if 2 or more are in the same row. // DONE
 -- FIX: Delete config fuckery, just rewrite everything. // DONE
 -- Add settings window with country selector.
 -- Add loading animation, to know if the program has died.

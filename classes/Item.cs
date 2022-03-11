@@ -92,6 +92,7 @@ namespace Sandelio_app_1.classes
         private readonly Picture picture;
         private readonly string orderNumber;
         public string OrderNumber => orderNumber;
+        public string ClientName {get;set;}
         private readonly int positionNumber;
         private readonly int width; // x
 
@@ -101,10 +102,10 @@ namespace Sandelio_app_1.classes
 
         //private readonly int amount;
         //private readonly bool isAlone;
-        public int Width => width + (Margin * 2);
+        public int Width => width + (BoxMargin * 2);
 
-        public int Length => length + (Margin * 2);
-        public int Height => height + (Margin * 2);
+        public int Length => length + (BoxMargin * 2);
+        public int Height => height + (BoxMargin * 2);
         /// <summary>
         /// Single item to be placed on a pallet
         /// </summary>
@@ -115,7 +116,7 @@ namespace Sandelio_app_1.classes
         /// <param name="weight">Weight in kg</param>
         /// <param name="name">Name of the item</param>
 
-        public Item(string name, int width, int length, int height, int weight, string picture, string orderNumber)
+        public Item(string name, int width, int length, int height, int weight, string picture, string orderNumber, string clientName)
         {
             this.width = width;
             this.length = length;
@@ -124,6 +125,7 @@ namespace Sandelio_app_1.classes
             this.name = name;
             this.picture = new(picture);
             this.orderNumber = orderNumber;
+            this.ClientName = clientName;
         }
 
         /// <summary>

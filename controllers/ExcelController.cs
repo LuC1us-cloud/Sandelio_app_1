@@ -2,6 +2,7 @@
 using Sandelio_app_1.classes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -11,13 +12,13 @@ namespace Sandelio_app_1.controllers
 {
     internal class ExcelController
     {
-        public static void CreateFile(List<Pallet> pallets, string client)
+        public static void CreateFile(List<Pallet> pallets, string client, string loadingDate)
         {
             Application excel;
             Workbook workBook;
             Worksheet palletListSheet;
             Worksheet drawingsWorkSheet;
-
+            Debug.WriteLine(loadingDate);
             try
             {
                 //Start Excel and get Application object.
@@ -38,7 +39,7 @@ namespace Sandelio_app_1.controllers
                 drawingsWorkSheet = CreateDrawingsSheet(pallets, client, workBook);
 
                 // Individual pallet sheet formatting function
-                CreatePalletSheets(pallets, client, workBook);
+                CreatePalletSheets(pallets, client, loadingDate, workBook);
 
                 // Give the user control of Microsoft Excel's lifetime.
                 excel.Visible = true;
@@ -56,7 +57,7 @@ namespace Sandelio_app_1.controllers
             }
         }
 
-        private static void CreatePalletSheets(List<Pallet> pallets, string client, Workbook workBook)
+        private static void CreatePalletSheets(List<Pallet> pallets, string client, string loadingDate, Workbook workBook)
         {
             for (int i = 1; i < pallets.Count + 1; i++)
             {
@@ -82,7 +83,7 @@ namespace Sandelio_app_1.controllers
                 currentSheet.Cells[8, 7] = "Width:";
                 currentSheet.Cells[8, 8] = pallets[i - 1].Width;
                 currentSheet.Cells[8, 10] = "Length:";
-                currentSheet.Cells[8, 11] = pallets[i - 1].Length;
+                currentSheet.Cells[8, 11] = $"{pallets[i - 1].Length + 50}";
                 currentSheet.Cells[8, 13] = "Weight:";
                 currentSheet.Cells[8, 14] = pallets[i - 1].GetPalletWeight() + "kg";
                 range = currentSheet.Range[currentSheet.Cells[8, 1], currentSheet.Cells[8, 2]];
@@ -127,7 +128,9 @@ namespace Sandelio_app_1.controllers
                 currentSheet.Range[currentSheet.Cells[4, 9], currentSheet.Cells[4, 10]].Merge();
                 currentSheet.Cells[5, 9] = pallets[i - 1].Country;
                 currentSheet.Range[currentSheet.Cells[5, 9], currentSheet.Cells[5, 10]].Merge();
-                currentSheet.Cells[6, 9] = "";
+                // number format as plain text
+                currentSheet.Range[currentSheet.Cells[6, 9], currentSheet.Cells[6, 9]].NumberFormat = "@";
+                currentSheet.Cells[6, 9] = $"{loadingDate}";
                 currentSheet.Range[currentSheet.Cells[6, 9], currentSheet.Cells[6, 10]].Merge();
 
                 currentSheet.Cells[2, 11] = "Pallet nr.:";
@@ -166,11 +169,12 @@ namespace Sandelio_app_1.controllers
                     range.Borders.Weight = XlBorderWeight.xlThin;
                 }
 
-                currentSheet.Cells[12, 13] = "BAR CODE";
-                currentSheet.Range[currentSheet.Cells[12, 13], currentSheet.Cells[24, 14]].Merge();
-                range = currentSheet.Range[currentSheet.Cells[12, 13], currentSheet.Cells[24, 14]];
-                range.Borders.LineStyle = XlLineStyle.xlContinuous;
-                range.Borders.Weight = XlBorderWeight.xlThin;
+                // BAR CODE SECTION
+                //currentSheet.Cells[12, 13] = "BAR CODE";
+                //currentSheet.Range[currentSheet.Cells[12, 13], currentSheet.Cells[24, 14]].Merge();
+                //range = currentSheet.Range[currentSheet.Cells[12, 13], currentSheet.Cells[24, 14]];
+                //range.Borders.LineStyle = XlLineStyle.xlContinuous;
+                //range.Borders.Weight = XlBorderWeight.xlThin;
 
                 // ger cell range of all active cells
                 Range rng = currentSheet.UsedRange;
