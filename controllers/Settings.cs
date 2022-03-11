@@ -7,7 +7,7 @@ namespace Sandelio_app_1.controllers
         public string ConfigName { get; set; } = "New Config";
         public int MaxStackWeight { get; set; } = 60;
         public int MaxStackHeight { get; set; } = 2650;
-        public int PalletHeight { get; set; } = 100;
+        public int PalletHeight { get; set; } = 200;
         public int[] PalletWidth { get; set; } = { 600, 800, 1200 };
         public bool IsAlone { get; set; }
 
@@ -16,7 +16,7 @@ namespace Sandelio_app_1.controllers
             ConfigName = "New Config";
             MaxStackWeight = 60;
             MaxStackHeight = 2650;
-            PalletHeight = 100;
+            PalletHeight = 200;
             PalletWidth = new int[] { 600, 800, 1200 };
             IsAlone = false;
         }
