@@ -4,6 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <AssemblyName>Sandelio_app</AssemblyName>
+    <RootNamespace>Sandelio_app</RootNamespace>
+    <ApplicationIcon>icons8-app-64.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
