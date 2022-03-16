@@ -98,6 +98,7 @@ namespace Sandelio_app_1
             _ = settingsWindow.ShowDialog();
         }
 
+        private List<Pallet> pallets;
         // open folder button click
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -122,15 +123,46 @@ namespace Sandelio_app_1
                 // If the list of orders is not null, then create a list of pallets from the list of orders
                 if (orders != null)
                 {
-                    List<Pallet> pallets = FileIO.CreatePallets(orders, filepath);
+                    pallets = FileIO.CreatePallets(orders, filepath);
                     // If the list of pallets is not null, then create a list of pallets from the list of pallets
                     if (pallets != null)
                     {
+                        // Sets the current view number to 'first' pallet
+                        currentPalletNumber.Content = 1;
+                        // -----------------------------
+
+                        // Starts the Excel file generation
                         ExcelController.CreateFile(pallets, clientInfo, loadingDate);
                     }
                 }
             }
             LoadingLabel.Content = "";
+        }
+
+        private int currentPalletViewNumber;
+
+        private void Button_Previous_Pallet_View_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentPalletViewNumber == 0) return;
+            currentPalletViewNumber--;
+            currentPalletNumber.Content = currentPalletViewNumber + 1;
+        }
+
+        private void Button_Next_Pallet_View_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentPalletViewNumber >= pallets.Count - 1) return;
+            currentPalletViewNumber++;
+            currentPalletNumber.Content = currentPalletViewNumber + 1;
+        }
+
+        private void Button_Add_New_Pallet(object sender, RoutedEventArgs e)
+        {
+            pallets.Add(new(pallets.Count));
+        }
+
+        private void Button_Remove_Current_Pallet(object sender, RoutedEventArgs e)
+        {
+            pallets.RemoveAt(currentPalletViewNumber - 1);
         }
     }
 }

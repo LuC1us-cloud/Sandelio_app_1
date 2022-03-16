@@ -10,12 +10,12 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="104"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="28"/>
             <ColumnDefinition Width="18"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="60"/>
             <RowDefinition/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
@@ -31,20 +31,49 @@
                 </StackPanel>
             </Border>
         </Grid>
+
         <Border Grid.Row="1"
                 Grid.Column="1"
                 CornerRadius="4"
                 Margin="15,15,15,15"
                 BorderBrush="#FF181A20"
                 BorderThickness="3">
-
             <Canvas x:Name="canvas"
                 AllowDrop="True"
                 Drop="Canvas_Drop"
                 Background="#FF0E1015">
                 <Label x:Name="LoadingLabel" Content="" Height="458" Width="864" Background="Transparent" Foreground="White" FontSize="72" Visibility="Visible" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Canvas>
-
         </Border>
+
+        <Border Grid.Row="1"
+                Grid.Column="2"
+                CornerRadius="4"
+                Margin="15,15,15,15"
+                BorderBrush="#FF181A20"
+                BorderThickness="3">
+            <Canvas x:Name="dropArea"
+                AllowDrop="True"
+                Drop="Canvas_Drop"
+                Background="#FF0E1015">
+                
+            </Canvas>
+        </Border>
+
+        <Grid Grid.Row="0"
+              Grid.Column="1">
+            <Border  CornerRadius="4"
+                    Margin="5"
+                     Background="#FF181A20">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Add"  Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Add_New_Pallet"/>
+                    <Button Content="Remove" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Remove_Current_Pallet"/>
+                    <Button Content="◄" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Previous_Pallet_View_Click"/>
+                    <Label x:Name="currentPalletNumber" Content="0" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30"/>
+                    <Button Content="►" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Next_Pallet_View_Click"/>
+                </StackPanel>
+            </Border>
+
+        </Grid>
     </Grid>
 </Window>
