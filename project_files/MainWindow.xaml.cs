@@ -150,6 +150,7 @@ namespace Sandelio_app_1
 
         private void Button_Next_Pallet_View_Click(object sender, RoutedEventArgs e)
         {
+            if (pallets is null) return;
             if (currentPalletViewNumber >= pallets.Count - 1) return;
             currentPalletViewNumber++;
             currentPalletNumber.Content = currentPalletViewNumber + 1;
@@ -157,12 +158,19 @@ namespace Sandelio_app_1
 
         private void Button_Add_New_Pallet(object sender, RoutedEventArgs e)
         {
+            if (pallets is null) return;
             pallets.Add(new(pallets.Count));
         }
 
         private void Button_Remove_Current_Pallet(object sender, RoutedEventArgs e)
         {
+            if (pallets is null) return;
             pallets.RemoveAt(currentPalletViewNumber - 1);
+        }
+
+        private void Button_Generate_Excel_Sheet(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

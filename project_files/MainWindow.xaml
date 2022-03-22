@@ -1,23 +1,22 @@
 ﻿<Window x:Class="Sandelio_app_1.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Sandelio_app_1"
         mc:Ignorable="d"
         Height="650" Width="1200">
     <Grid x:Name="OuterGrid" Background="#FF0C0E13">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="28"/>
-            <ColumnDefinition Width="18"/>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="28" />
+            <ColumnDefinition Width="18" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="60" />
+            <RowDefinition />
+            <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1"
@@ -26,8 +25,8 @@
                      CornerRadius="7"
                      Background="#FF181A20">
                 <StackPanel>
-                    <Button Content="Open Folder" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Button_Click_1"/>
-                    <Button Content="Settings" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Settings_Click"/>
+                    <Button Content="Open Folder" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Button_Click_1" />
+                    <Button Content="Settings" Height="30" Margin="10, 10, 10, 0" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="0" Click="Settings_Click" />
                 </StackPanel>
             </Border>
         </Grid>
@@ -42,7 +41,7 @@
                 AllowDrop="True"
                 Drop="Canvas_Drop"
                 Background="#FF0E1015">
-                <Label x:Name="LoadingLabel" Content="" Height="458" Width="864" Background="Transparent" Foreground="White" FontSize="72" Visibility="Visible" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Label x:Name="LoadingLabel" Content="" Height="418" Width="767" Background="Transparent" Foreground="White" FontSize="72" Visibility="Visible" />
             </Canvas>
         </Border>
 
@@ -56,24 +55,55 @@
                 AllowDrop="True"
                 Drop="Canvas_Drop"
                 Background="#FF0E1015">
-                
             </Canvas>
         </Border>
 
-        <Grid Grid.Row="0"
-              Grid.Column="1">
-            <Border  CornerRadius="4"
+        <Border CornerRadius="4"
                     Margin="5"
-                     Background="#FF181A20">
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Add"  Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Add_New_Pallet"/>
-                    <Button Content="Remove" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Remove_Current_Pallet"/>
-                    <Button Content="◄" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Previous_Pallet_View_Click"/>
-                    <Label x:Name="currentPalletNumber" Content="0" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30"/>
-                    <Button Content="►" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Next_Pallet_View_Click"/>
+                    Background="#FF181A20"
+                    Grid.Column="1">
+            <Grid Grid.Row="0"
+              Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="0">
+                    <Button Content="Add"  Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Add_New_Pallet" />
+                    <Button Content="Remove" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Remove_Current_Pallet" />
                 </StackPanel>
-            </Border>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
+                     <Button Content="◄" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Previous_Pallet_View_Click" />
+                    <Label x:Name="currentPalletNumber" Content="0" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" />
+                    <Button Content="►" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Next_Pallet_View_Click" />
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
+                    <Button Content="Generate Excel" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" Click="Button_Generate_Excel_Sheet" />
+                </StackPanel>
+            </Grid>
+        </Border>
 
+        <Grid Grid.Row="2"
+              Grid.Column="1">
+            <Border CornerRadius="4"
+                    Margin="5"
+                    Background="#FF181A20">
+                <WrapPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Label Content="Items: 0" Height="30" Width="100" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" />
+                    <Label Content="Items: 0" Height="40" Width="100" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" />
+                    <Label Content="Items: 0" Height="40" Width="100" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" />
+                    <Label Content="Items: 0" Height="40" Width="100" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" />
+                    <Label Content="Items: 0" Height="40" Width="100" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" />
+                    <Label Content="Items: 0" Height="40" Width="100" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" />
+                    <Label Content="Items: 0" Height="40" Width="100" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" />
+                    <Label Content="Items: 0" Height="40" Width="100" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" />
+                    <Label Content="Items: 0" Height="40" Width="100" Margin="5" FontSize="15" FontWeight="SemiBold" Background="#FF272A30" Foreground="#FFDADCE1" BorderThickness="5" BorderBrush="#FF272A30" />
+                </WrapPanel>
+            </Border>
         </Grid>
     </Grid>
 </Window>
