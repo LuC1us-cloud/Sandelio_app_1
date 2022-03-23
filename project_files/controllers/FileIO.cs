@@ -198,7 +198,7 @@ namespace Sandelio_app_1.controllers
                 }
             }
             // remove last char from order.Number
-            orderNumber = orderNumber.Remove(orderNumber.Length - 2);
+            //orderNumber = orderNumber.Remove(orderNumber.Length - 2);
             // remove all orders where order.Alone is false
             for (int h = orders.Count - 1; h >= 0; h--)
             {

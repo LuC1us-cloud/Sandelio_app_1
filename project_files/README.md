@@ -63,6 +63,11 @@ Problems:
 
 
 ADD:
+-- Create new pallet button needs a pop up dialog to change Pallets dimensions, so it isn't 0x0
+-- grid 3x1 spot add box that displays current pallet width and length
+-- Remove pallet should drop off all items removed back to free item list
+-- Right side item display should have it's own lists of items and display them there
+-- Right side item display should be scrollable
 
 DONE:
 -- Atsiras ClientName, kurį reikės pridėt kur rašo Order Nr kaip string tsg. // DONE
