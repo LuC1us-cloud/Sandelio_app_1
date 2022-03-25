@@ -15,7 +15,7 @@ Plotis gali but 600,800,1200
 Plotis pagal ilgi renkamas atitinkamai
 1.8m > ilgis, plotis - 600
 1.8m < ilgis, plotis - 800
-3m > ilgis - 1200
+3m > ilgis, plotis - 1200
 
 2850x800 palete bus isrinkta.
 

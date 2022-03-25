@@ -132,19 +132,19 @@ namespace Sandelio_app_1.classes
             // Not really efficient but calculations are still in the hundreds of cycles, so it's fine
             if (items.Count > 0)
             {
-                if (Width == 600)
+                if (Width == Settings.PalletWidth[0])
                 {
-                    Width = 800;
+                    Width = Settings.PalletWidth[1];
                     items.AddRange(TakeAllItems());
                     return Initialize(items);
                 }
-                else if (Width == 800)
+                else if (Width == Settings.PalletWidth[1])
                 {
-                    Width = 1200;
+                    Width = Settings.PalletWidth[2];
                     items.AddRange(TakeAllItems());
                     return Initialize(items);
                 }
-                else if (Width == 1200)
+                else if (Width == Settings.PalletWidth[2])
                 {
                     return items;
                 }
@@ -226,6 +226,7 @@ namespace Sandelio_app_1.classes
             {
                 case < 1800:
                     Width = Settings.PalletWidth[0];
+                    if (items.Max(x => x.Height) >= 2000) Width = Settings.PalletWidth[1];
                     break;
 
                 case < 3000:
